@@ -381,23 +381,25 @@ static void co_runner(void) {
 
 
 coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size) {
-	int alloc = 0;
+	int alloc = 0, r = (sizeof (coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1);
 	coroutine *co;
 
-	if ((size &= ~(sizeof(int) - 1)) < CO_MIN_SIZE)
+	if ((size &= ~(sizeof(int) - 1)) < CO_MIN_SIZE ||
+	    (size - r) < CO_MIN_SIZE)
 		return NULL;
 	if (!stack) {
-		size = (size + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1);
+		size = (size + sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1);
 		stack = malloc(size);
 		if (!stack)
 			return NULL;
 		alloc = size;
 	}
 	co = stack;
+	stack = (char *) stack + r;
 	co->alloc = alloc;
 	co->func = func;
 	co->data = data;
-	if (co_set_context(&co->ctx, co_runner, stack, size) < 0) {
+	if (co_set_context(&co->ctx, co_runner, stack, size - r) < 0) {
 		if (alloc)
 			free(co);
 		return NULL;
