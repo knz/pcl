@@ -46,7 +46,7 @@ typedef jmp_buf co_core_ctx_t;
  */
 #define CO_STK_ALIGN 256
 #define CO_STK_MIN (4 * 1024)
-#define CO_MIN_SIZE (sizeof(coroutine) + CO_STK_MIN)
+#define CO_MIN_SIZE (((sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1)) + CO_STK_MIN)
 
 
 typedef struct s_co_ctx {
