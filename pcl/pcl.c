@@ -385,7 +385,7 @@ coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size) {
 	coroutine *co;
 
 	if ((size &= ~(sizeof(int) - 1)) < CO_MIN_SIZE ||
-	    (size - r) < CO_MIN_SIZE)
+	    (size - r) < CO_STK_MIN)
 		return NULL;
 	if (!stack) {
 		size = (size + sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1);
