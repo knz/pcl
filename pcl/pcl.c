@@ -45,8 +45,8 @@ typedef jmp_buf co_core_ctx_t;
  * The following value must be power of two ( N^2 ).
  */
 #define CO_STK_ALIGN 256
-#define CO_STK_MIN (4 * 1024)
-#define CO_MIN_SIZE (((sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1)) + CO_STK_MIN)
+#define CO_STK_COROSIZE ((sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1))
+#define CO_MIN_SIZE (4 * 1024)
 
 
 typedef struct s_co_ctx {
@@ -381,11 +381,10 @@ static void co_runner(void) {
 
 
 coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size) {
-	int alloc = 0, r = (sizeof (coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1);
+	int alloc = 0, r = CO_STK_COROSIZE;
 	coroutine *co;
 
-	if ((size &= ~(sizeof(int) - 1)) < CO_MIN_SIZE ||
-	    (size - r) < CO_STK_MIN)
+	if ((size &= ~(sizeof(int) - 1)) < CO_MIN_SIZE)
 		return NULL;
 	if (!stack) {
 		size = (size + sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1);
@@ -395,11 +394,11 @@ coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size) {
 		alloc = size;
 	}
 	co = stack;
-	stack = (char *) stack + r;
+	stack = (char *) stack + CO_STK_COROSIZE;
 	co->alloc = alloc;
 	co->func = func;
 	co->data = data;
-	if (co_set_context(&co->ctx, co_runner, stack, size - r) < 0) {
+	if (co_set_context(&co->ctx, co_runner, stack, size - CO_STK_COROSIZE) < 0) {
 		if (alloc)
 			free(co);
 		return NULL;
