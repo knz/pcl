@@ -1,7 +1,7 @@
 
-INCLUDES = -I../include
+INCLUDES = -I$(srcdir)/../include
 
-noinst_PROGRAMS = cobench cothread
+check_PROGRAMS = cobench cothread
 
 cobench_SOURCES = cobench.c
 cobench_LDADD = ../pcl/.libs/libpcl.a
