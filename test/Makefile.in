@@ -89,10 +89,10 @@ INCLUDES = -I../include
 noinst_PROGRAMS = cobench cothread
 
 cobench_SOURCES = cobench.c
-cobench_LDADD = ../pcl/libpcl.a
+cobench_LDADD = ../pcl/.libs/libpcl.a
 
 cothread_SOURCES = cothread.c
-cothread_LDADD = ../pcl/libpcl.a
+cothread_LDADD = ../pcl/.libs/libpcl.a
 subdir = test
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -102,11 +102,11 @@ PROGRAMS = $(noinst_PROGRAMS)
 
 am_cobench_OBJECTS = cobench.$(OBJEXT)
 cobench_OBJECTS = $(am_cobench_OBJECTS)
-cobench_DEPENDENCIES = ../pcl/libpcl.a
+cobench_DEPENDENCIES = ../pcl/.libs/libpcl.a
 cobench_LDFLAGS =
 am_cothread_OBJECTS = cothread.$(OBJEXT)
 cothread_OBJECTS = $(am_cothread_OBJECTS)
-cothread_DEPENDENCIES = ../pcl/libpcl.a
+cothread_DEPENDENCIES = ../pcl/.libs/libpcl.a
 cothread_LDFLAGS =
 
 DEFS = @DEFS@
