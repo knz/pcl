@@ -1,6 +1,6 @@
 
 INCLUDES = -I../include
 
-lib_LIBRARIES = libpcl.a
-libpcl_a_SOURCES = pcl.c pcl_version.c
+lib_LTLIBRARIES = libpcl.la
+libpcl_la_SOURCES = pcl.c pcl_version.c
 
