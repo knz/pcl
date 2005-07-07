@@ -105,7 +105,7 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 	ctx->cc.uc_link = NULL;
  
 	ctx->cc.uc_stack.ss_sp = stkbase;
-	ctx->cc.uc_stack.ss_size = stksiz - sizeof(int);
+	ctx->cc.uc_stack.ss_size = stksiz - sizeof(long);
 	ctx->cc.uc_stack.ss_flags = 0;
  
 	makecontext(&ctx->cc, func, 1);
@@ -250,13 +250,13 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 	 */
 #if defined(CO_HAS_SIGALTSTACK)
 	ss.ss_sp = stkbase;
-	ss.ss_size = stksiz - sizeof(int);
+	ss.ss_size = stksiz - sizeof(long);
 	ss.ss_flags = 0;
 	if (sigaltstack(&ss, &oss) < 0)
 		return -1;
 #elif defined(CO_HAS_SIGSTACK)
 	if (co_ctx_stackdir() < 0)
-		ss.ss_sp = (stkbase + stksiz - sizeof(int));
+		ss.ss_sp = (stkbase + stksiz - sizeof(long));
 	else
 		ss.ss_sp = stkbase;
 	ss.ss_onstack = 0;
@@ -330,7 +330,7 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz) {
 	char *stack;
 
-	stack = stkbase + stksiz - sizeof(int);
+	stack = stkbase + stksiz - sizeof(long);
 
 	setjmp(ctx->cc);
 
@@ -384,7 +384,7 @@ coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size) {
 	int alloc = 0, r = CO_STK_COROSIZE;
 	coroutine *co;
 
-	if ((size &= ~(sizeof(int) - 1)) < CO_MIN_SIZE)
+	if ((size &= ~(sizeof(long) - 1)) < CO_MIN_SIZE)
 		return NULL;
 	if (!stack) {
 		size = (size + sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1);

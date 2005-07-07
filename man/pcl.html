@@ -1,8 +1,9 @@
-<HTML><HEAD><TITLE>Manpage of PCL</TITLE>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PCL</TITLE>
 </HEAD><BODY text="#0000FF" bgcolor="#FFFFFF">
 <H1>PCL</H1>
-Section: Portable Coroutine Library (3)<BR>Updated: 1.4<BR><A HREF="#index">Index</A>
-<A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+Section: Portable Coroutine Library (3)<BR>Updated: 1.5<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
 
 <A NAME="lbAB">&nbsp;</A>
 <H2>NAME</H2>
@@ -13,7 +14,7 @@ co_create, co_call, co_resume, co_delete, co_exit_to, co_exit, co_current - C co
 <H2>SYNOPSIS</H2>
 
 <PRE>
-<B>#include &lt;<A HREF="file:/usr/include/pcl.h">pcl.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/pcl.h">pcl.h</A>&gt;</B>
 
 <B>coroutine_t co_create(void *</B><I>func</I><B>, void *</B><I>data</I><B>, void *</B><I>stack</I><B>, int </B><I>stacksize</I><B>);</B>
 <B>void co_delete(coroutine_t </B><I>co</I><B>);</B>
@@ -205,7 +206,7 @@ Second, the signal handler may run with the stack of any coroutine,
 even with the stack of library internal coroutines which have an
 undefined stack size (just enough to perform a kernel call).
 Using and alternate stack for signal processing (see
-<B><A HREF="http://localhost/cgi-bin/man/man2html?2+sigaltstack">sigaltstack</A></B>(2))
+<B><A HREF="/cgi-bin/man/man2html?2+sigaltstack">sigaltstack</A></B>(2))
 
 is recommended!
 <P>
@@ -219,11 +220,11 @@ just add one more problem)
 
 <DD>
 The use of
-<B><A HREF="http://localhost/cgi-bin/man/man2html?2+setjmp">setjmp</A></B>(2)/<B><A HREF="http://localhost/cgi-bin/man/man2html?2+longjmp">longjmp</A></B>(2)
+<B><A HREF="/cgi-bin/man/man2html?2+setjmp">setjmp</A></B>(2)/<B><A HREF="/cgi-bin/man/man2html?2+longjmp">longjmp</A></B>(2)
 
 is limited to jumping inside one coroutine.  Never try to jump from
 one coroutine to another with
-<B><A HREF="http://localhost/cgi-bin/man/man2html?2+longjmp">longjmp</A></B>(2).
+<B><A HREF="/cgi-bin/man/man2html?2+longjmp">longjmp</A></B>(2).
 
 <P>
 </DL>
@@ -320,8 +321,8 @@ Bug reports and comments to Davide Libenzi &lt;
 </DL>
 <HR>
 This document was created by
-<A HREF="http://localhost/cgi-bin/man/man2html">man2html</A>,
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
 using the manual pages.<BR>
-Time: 02:03:07 GMT, February 09, 2005
+Time: 16:47:48 GMT, July 07, 2005
 </BODY>
 </HTML>
