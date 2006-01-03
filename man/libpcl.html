@@ -15,11 +15,12 @@
 <body
  style="color: rgb(0, 0, 255); background-color: rgb(255, 255, 255);">
 <p align="center"><font size="+1"><b>Portable Coroutine Library (PCL)<br>
-</b>by<br>
-<a href="http://www.xmailserver.org/davide.html">Davide Libenzi</a></font></p>
-<p align="left"><br>
+</b><br>
+</font></p>
+<p align="left"><font size="+1"><br>
 The Portable Coroutine Library (PCL) implements the low level
-functionality for coroutines. For a definition of the term coroutine see <u>The
+functionality for coroutines. For a definition of the term coroutine
+see <u>The
 Art of Computer Programming</u> by <u>Donald E. Knuth</u>. Coroutines
 are a very simple cooperative multitasking environment where the switch
 from one task to another is done explicitly by a function call.
@@ -29,13 +30,15 @@ require much less OS resources than processes of threads. The idea of
 writing this library started when I was testing Linux <a
  href="http://www.xmailserver.org/linux-patches/nio-improve.html">epoll</a>
 functionality and performance. I initially started using the <a
- href="http://www.goron.de/%7Efroese/coro/coro.html">coro</a> library by
+ href="http://www.goron.de/%7Efroese/coro/coro.html">coro</a> library
+by
 E. Toernig &lt;<a href="mailto:froese@gmx.de">froese@gmx.de</a>&gt; and
 I found the library very interesting. It was simple and yet powerful.
 The limitations of the <a
  href="http://www.goron.de/%7Efroese/coro/coro.html">coro</a> library
 were both non portability and crashes when not used together with
-certain versions of <a href="http://gcc.gnu.org/">gcc</a>. So I decided
+certain versions of <a href="http://gcc.gnu.org/">gcc</a>. So I
+decided
 to write a new library to address the problems aforementioned by also
 taking portable context switching ideas from the <a
  href="http://www.gnu.org/software/pth/">GNU Pth library</a>. This
@@ -43,21 +46,31 @@ library is easily portable on almost every Unix system and on Windows.
 It can use either the ucontext.h functionalities (
 getcontext()/makecontest()/swapcontext() ) or the standard
 longjmp()/setjmp().<br>
-</p>
-<p align="center"><br>
-<b><font size="+1">Documentation</font></b></p>
-<p align="left">PCL man page: <a href="pcl.html">HTML</a> <a
- href="pcl.txt">TXT</a> <a href="pcl.ps">PS</a><br>
+</font></p>
+<p align="center"><font size="+1"><br>
+<b><font size="+1">Documentation</font></b></font></p>
+<p align="left"><font size="+1">PCL man page: <a href="pcl.html">HTML</a>
+<a href="pcl.txt">TXT</a> <a href="pcl.ps">PS</a><br>
 <br>
-</p>
-<p align="center"><font size="+1"><b>Download</b></font></p>
-<p align="left">Latest version : <a href="pcl-1.5.tar.gz">1.5</a></p>
-<p align="left"> </p>
-<p align="center"><font size="+1"><b>Links</b></font></p>
-<p align="left"><a href="http://freshmeat.net/projects/libpcl/">FreshMeat
+</font></p>
+<p align="center"><font size="+1"><font size="+1"><b>Download</b></font></font></p>
+<p align="left"><font size="+1">Latest version : <a
+ href="pcl-1.6.tar.gz">1.6</a></font></p>
+<p align="left"><font size="+1"> </font></p>
+<p align="center"><font size="+1"><font size="+1"><b>Links</b></font></font></p>
+<p align="left"><font size="+1"><a
+ href="http://freshmeat.net/projects/libpcl/">FreshMeat
 Home Page</a><br>
 <a href="http://www.gnu.org/software/pth">GNU Pth library</a><br>
-<a href="rse-pmt.pdf">Very nice paper about portable multi-threading</a></p>
-<p align="left"> </p>
+<a href="rse-pmt.pdf">Very nice paper about portable multi-threading</a><br>
+</font></p>
+<p align="left"><font size="+1"><br>
+</font></p>
+<p align="left"><font size="+1"><br>
+<a href="davide.html">Back Home</a><br>
+</font></p>
+<p align="left"><font size="+1"><br>
+</font></p>
+<p align="left"><font size="+1"> </font></p>
 </body>
 </html>
