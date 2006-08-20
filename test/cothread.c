@@ -256,7 +256,7 @@ coroutine_t cothread_new(void (*func)(), ...) {
 	add_req(req, IOTIMEOUT, 0);
 	va_start(args, func);
 
-	if ((co = co_create(func, args, 0, 32768)))
+	if ((co = co_create(func, &args, 0, 32768)))
 		co_call(co);
 
 	va_end(args);
@@ -273,9 +273,9 @@ void cothread_init() {
 }
 
 
-static void test1(va_list args) {
-	char *str = va_arg(args, char *);
-	int limit = va_arg(args, int);
+static void test1(va_list *args) {
+	char *str = va_arg(*args, char *);
+	int limit = va_arg(*args, int);
 	int i = 0;
 
 	printf("%s started\n", str);
@@ -288,10 +288,10 @@ static void test1(va_list args) {
 }
 
 
-static void test2(va_list args) {
-	char *str = va_arg(args, char *);
-	int in = va_arg(args, int);
-	int out = va_arg(args, int);
+static void test2(va_list *args) {
+	char *str = va_arg(*args, char *);
+	int in = va_arg(*args, int);
+	int out = va_arg(*args, int);
 	char buf[256];
 	int n;
 
