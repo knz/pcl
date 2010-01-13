@@ -1,6 +1,6 @@
 /*
- *  PCL by Davide Libenzi ( Portable Coroutine Library )
- *  Copyright (C) 2003  Davide Libenzi
+ *  PCL by Davide Libenzi (Portable Coroutine Library)
+ *  Copyright (C) 2003..2010  Davide Libenzi
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,12 +22,10 @@
 
 #include "pcl_config.h"
 
-
 #define PCL_VERSION VERSION
-
 
 char const *pcl_version[] = {
 	"Portable Coroutine Library (PCL) - Version " PCL_VERSION "\n"
-	"Copyright (C) 2003 Davide Libenzi <davidel@xmailserver.org>\n"
+	"Copyright (C) 2003..2010 Davide Libenzi <davidel@xmailserver.org>\n"
 };
 

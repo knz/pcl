@@ -1,6 +1,6 @@
 /*
- *  PCL by Davide Libenzi ( Portable Coroutine Library )
- *  Copyright (C) 2003  Davide Libenzi
+ *  PCL by Davide Libenzi (Portable Coroutine Library)
+ *  Copyright (C) 2003..2010  Davide Libenzi
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,26 +24,21 @@
 #define PCL_H
 
 #ifdef __cplusplus
-extern "C" {
+#define PCLXC extern "C"
+#else
+#define PCLXC
 #endif
-
 
 typedef void *coroutine_t;
 
-
-coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size);
-void co_delete(coroutine_t coro);
-void co_call(coroutine_t coro);
-void co_resume(void);
-void co_exit_to(coroutine_t coro);
-void co_exit(void);
-coroutine_t co_current(void);
-
-
-
-#ifdef __cplusplus
-}
-#endif
+PCLXC coroutine_t co_create(void (*func)(void *), void *data, void *stack,
+			    int size);
+PCLXC void co_delete(coroutine_t coro);
+PCLXC void co_call(coroutine_t coro);
+PCLXC void co_resume(void);
+PCLXC void co_exit_to(coroutine_t coro);
+PCLXC void co_exit(void);
+PCLXC coroutine_t co_current(void);
 
 #endif
 
