@@ -348,8 +348,15 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 	ctx->cc[5] = (long) func;
 	ctx->cc[4] = (long) stack;
 #elif defined(_WIN32) && defined(_MSC_VER)
+#if defined(_M_IX86)
 	((_JUMP_BUFFER *) &ctx->cc)->Eip = (long) func;
 	((_JUMP_BUFFER *) &ctx->cc)->Esp = (long) stack;
+#elif defined(_M_AMD64)
+	((_JUMP_BUFFER *) &ctx->cc)->Rip = (long) func;
+	((_JUMP_BUFFER *) &ctx->cc)->Rsp = (long) stack;
+#else
+#error "PCL: Unsupported setjmp/longjmp Windows CPU. Please report to <davidel@xmailserver.org>"
+#endif
 #elif defined(__GLIBC__) && defined(__GLIBC_MINOR__)			\
 	&& __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 0 && (defined(__powerpc64__) || defined(__powerpc__))
 	ctx->cc[0].__jmpbuf[JB_LR] = (int) func;
