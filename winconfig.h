@@ -20,42 +20,13 @@
  *
  */
 
-#if !defined(PCL_CONFIG_H)
-#define PCL_CONFIG_H
+#if !defined(WINCONFIG_H)
+#define WINCONFIG_H
 
-#if defined(HAVE_CONFIG_H)
-#include "config.h"
-#elif defined(HAVE_WINCONFIG_H)
-#include "winconfig.h"
-#endif /* #if defined(HAVE_CONFIG_H) */
-
-
-#if defined(HAVE_GETCONTEXT) && defined(HAVE_MAKECONTEXT) && defined(HAVE_SWAPCONTEXT)
-
-/*
- * Use this if the system has a working getcontext/makecontext/swapcontext
- * implementation.
- */
-#define CO_USE_UCONEXT
-
-#elif defined(HAVE_SIGACTION)
-
-/*
- * Use this to have the generic signal implementation ( not working on
- * Windows ). Suggested on generic Unix implementations or on Linux with
- * CPU different from x86 family.
- */
-#define CO_USE_SIGCONTEXT
-
-/*
- * Use this in conjuction with CO_USE_SIGCONTEXT to use the sigaltstack
- * environment ( suggested when CO_USE_SIGCONTEXT is defined ).
- */
-#if defined(HAVE_SIGALTSTACK)
-#define CO_HAS_SIGALTSTACK
+#if !defined(VERSION)
+#define VERSION "1.8"
 #endif
 
-#endif
 
 #endif
 

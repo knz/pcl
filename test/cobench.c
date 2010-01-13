@@ -1,6 +1,6 @@
 /*
- *  CoBench by Davide Libenzi ( Portable Coroutine Library bench tester )
- *  Copyright (C) 2003  Davide Libenzi
+ *  CoBench by Davide Libenzi (Portable Coroutine Library bench tester)
+ *  Copyright (C) 2003..2010  Davide Libenzi
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,29 +32,28 @@
 #define CO_STACK_SIZE (8 * 1024)
 
 
-
 static volatile unsigned long sw_counter;
 
 
-
-static unsigned long long getustime(void) {
+static unsigned long long getustime(void)
+{
 	struct timeval tm;
 
 	gettimeofday(&tm, NULL);
-	return (unsigned long long) tm.tv_sec * 1000000ULL + (unsigned long long) tm.tv_usec;
+
+	return tm.tv_sec * 1000000ULL + tm.tv_usec;
 }
 
-
-static void switch_bench(void *data) {
-
+static void switch_bench(void *data)
+{
 	for (;;) {
 		sw_counter--;
 		co_resume();
 	}
 }
 
-
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv)
+{
 	int i, ntimes;
 	coroutine_t coro;
 	unsigned long nswitches;
