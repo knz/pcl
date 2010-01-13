@@ -187,7 +187,7 @@ static void co_ctx_trampoline(int sig)
 	 * good (for instance it wouldn't allow us to spawn a thread
 	 * from within a thread, etc.)
 	 */
-	if (!setjmp(ctx_trampoline.cc)) {
+	if (setjmp(ctx_trampoline.cc) == 0) {
 		ctx_called = 1;
 		return;
 	}
@@ -317,7 +317,7 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 	 * Now enter the trampoline again, but this time not as a signal
 	 * handler. Instead we jump into it directly.
 	 */
-	if (!setjmp(ctx_caller.cc))
+	if (setjmp(ctx_caller.cc) == 0)
 		longjmp(ctx_trampoline.cc, 1);
 
 	return 0;
@@ -372,7 +372,7 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 
 static void co_switch_context(co_ctx_t *octx, co_ctx_t *nctx)
 {
-	if (!setjmp(octx->cc))
+	if (setjmp(octx->cc) == 0)
 		longjmp(nctx->cc, 1);
 }
 
@@ -453,7 +453,7 @@ static void co_del_helper(void *data)
 		co_dhelper = NULL;
 		co_delete(co_curr->caller);
 		co_call((coroutine_t) cdh);
-		if (!co_dhelper) {
+		if (co_dhelper == NULL) {
 			fprintf(stderr,
 				"[PCL] Resume to delete helper coroutine: curr=%p caller=%p\n",
 				co_curr, co_curr->caller);
@@ -468,8 +468,8 @@ void co_exit_to(coroutine_t coro)
 	static coroutine *dchelper = NULL;
 	static char stk[CO_MIN_SIZE];
 
-	if (!dchelper &&
-	    !(dchelper = co_create(co_del_helper, NULL, stk, sizeof(stk)))) {
+	if (dchelper == NULL &&
+	    (dchelper = co_create(co_del_helper, NULL, stk, sizeof(stk))) == NULL) {
 		fprintf(stderr, "[PCL] Unable to create delete helper coroutine: curr=%p\n",
 			co_curr);
 		exit(1);
