@@ -344,12 +344,12 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 #elif defined(__GNU_LIBRARY__) && defined(__i386__)
 	ctx->cc[0].__jmpbuf[0].__pc = func;
 	ctx->cc[0].__jmpbuf[0].__sp = stack;
-#elif defined(_WIN32) && defined(_MSC_VER)
-	((_JUMP_BUFFER *) &ctx->cc)->Eip = (long) func;
-	((_JUMP_BUFFER *) &ctx->cc)->Esp = (long) stack;
 #elif defined(__MINGW32__)
 	ctx->cc[5] = (long) func;
 	ctx->cc[4] = (long) stack;
+#elif defined(_WIN32) && defined(_MSC_VER)
+	((_JUMP_BUFFER *) &ctx->cc)->Eip = (long) func;
+	((_JUMP_BUFFER *) &ctx->cc)->Esp = (long) stack;
 #elif defined(__GLIBC__) && defined(__GLIBC_MINOR__)			\
 	&& __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 0 && (defined(__powerpc64__) || defined(__powerpc__))
 	ctx->cc[0].__jmpbuf[JB_LR] = (int) func;
