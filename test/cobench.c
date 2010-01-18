@@ -52,14 +52,12 @@ static void switch_bench(void *data)
 	}
 }
 
-static void *thread_proc(void *data)
+static void *run_test(void *data)
 {
 	int i, ntimes;
 	coroutine_t coro;
 	unsigned long nswitches, sw_counter;
 	unsigned long long ts, te;
-
-	co_thread_init();
 
 	fprintf(stdout, "[%p] measuring co_create+co_delete performance ...\n",
 		pthread_self());
@@ -101,9 +99,18 @@ static void *thread_proc(void *data)
 		co_delete(coro);
 	}
 
+	return NULL;
+}
+
+static void *thread_proc(void *data)
+{
+	void *result;
+
+	co_thread_init();
+	result = run_test(data);
 	co_thread_cleanup();
 
-	return NULL;
+	return result;
 }
 
 int main(int argc, char **argv)
@@ -118,17 +125,20 @@ int main(int argc, char **argv)
 				nthreads = atoi(argv[i]);
 		}
 	}
-
-	thids = (pthread_t *) malloc(nthreads * sizeof(pthread_t));
-	for (i = 0; i < nthreads; i++) {
-		if (pthread_create(&thids[i], NULL, thread_proc, NULL)) {
-			perror("creating worker threads");
-			return 1;
+	if (nthreads == 1)
+		run_test(NULL);
+	else {
+		thids = (pthread_t *) malloc(nthreads * sizeof(pthread_t));
+		for (i = 0; i < nthreads; i++) {
+			if (pthread_create(&thids[i], NULL, thread_proc,
+					   NULL)) {
+				perror("creating worker threads");
+				return 1;
+			}
 		}
+		for (i = 0; i < nthreads; i++)
+			pthread_join(thids[i], NULL);
 	}
-
-	for (i = 0; i < nthreads; i++)
-		pthread_join(thids[i], NULL);
 
 	return 0;
 }

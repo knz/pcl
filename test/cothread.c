@@ -4,6 +4,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <pthread.h>
 #include <pcl.h>
 
 /*
@@ -80,9 +81,6 @@ struct iosched {
 	struct ioqueue *wait;	// requests for the next poll
 	struct ioqueue queues[2];	// data area of the queues.
 };
-
-static struct iosched glbl[1];
-
 
 
 static struct timeval *tvadd(struct timeval *dst, struct timeval *a,
@@ -174,28 +172,30 @@ static void enqueue(struct ioqueue *q, struct ioreq *r)
 	q->req = r;
 }
 
-static void vadd_req(struct ioreq *r, int mode, va_list args)
+static void vadd_req(struct iosched *glbl, struct ioreq *r, int mode,
+		     va_list args)
 {
 	r->coro = co_current();
 	r->mode = mode;
 	if (mode & (IOREAD|IOWRITE|IOEXCEPT))
 		r->fd = va_arg(args, int);
 	if (mode & IOTIMEOUT)
-		tvadd(r->timeout, to2tv(r->timeout, va_arg(args, int)), glbl->ctime);
+		tvadd(r->timeout, to2tv(r->timeout, va_arg(args, int)),
+		      glbl->ctime);
 
 	enqueue(glbl->wait, r);
 }
 
-static void add_req(struct ioreq *r, int mode, ...)
+static void add_req(struct iosched *glbl, struct ioreq *r, int mode, ...)
 {
 	va_list args;
 
 	va_start(args, mode);
-	vadd_req(r, mode, args);
+	vadd_req(glbl, r, mode, args);
 	va_end(args);
 }
 
-int cothread_schedule(void)
+static int cothread_schedule(struct iosched *glbl)
 {
 	struct ioqueue *q;
 	struct ioreq *r;
@@ -204,9 +204,9 @@ int cothread_schedule(void)
 
 	for (;;) {
 		q = glbl->active;
-		while ((r = q->req)) {
+		while ((r = q->req) != NULL) {
 			q->req = r->next;
-			if ((res = check(q, r, glbl->ctime))) {
+			if ((res = check(q, r, glbl->ctime)) != 0) {
 				co_call(r->coro);
 				return -1;
 			}
@@ -233,26 +233,31 @@ int cothread_schedule(void)
 	return 0;
 }
 
-int cothread_wait(int mode, ...)
+static int cothread_wait(struct iosched *glbl, int mode, ...)
 {
 	va_list args;
 	struct ioreq req[1];
 
 	va_start(args, mode);
-	vadd_req(req, mode, args);
+	vadd_req(glbl, req, mode, args);
 	va_end(args);
-	return cothread_schedule();
+
+	return cothread_schedule(glbl);
 }
 
-coroutine_t cothread_new(void (*func)(), ...)
+static coroutine_t cothread_new(void (*func)(), ...)
 {
 	coroutine_t co;
 	va_list args;
+	struct iosched *glbl;
 	struct ioreq req[1];
 
-	add_req(req, IOTIMEOUT, 0);
 	va_start(args, func);
+	glbl = va_arg(args, struct iosched *);
+	va_end(args);
 
+	add_req(glbl, req, IOTIMEOUT, 0);
+	va_start(args, func);
 	if ((co = co_create(func, &args, 0, 32768)))
 		co_call(co);
 
@@ -260,8 +265,9 @@ coroutine_t cothread_new(void (*func)(), ...)
 	return co;
 }
 
-void cothread_init()
+static void cothread_init(struct iosched *glbl)
 {
+	memset(glbl, 0, sizeof(*glbl));
 	gettimeofday(glbl->ctime, 0);
 	glbl->active = glbl->queues;
 	glbl->wait = glbl->queues + 1;
@@ -270,21 +276,23 @@ void cothread_init()
 
 static void test1(va_list *args)
 {
+	struct iosched *glbl = va_arg(*args, struct iosched *);
 	char *str = va_arg(*args, char *);
 	int limit = va_arg(*args, int);
 	int i = 0;
 
 	printf("%s started\n", str);
 	while (i < limit) {
-		cothread_wait(IOTIMEOUT, 1000);
+		cothread_wait(glbl, IOTIMEOUT, 1000);
 		printf("%s: %d\n", str, i++);
 	}
 	printf("%s: dying\n", str);
-	cothread_wait(0);
+	cothread_wait(glbl, 0);
 }
 
 static void test2(va_list *args)
 {
+	struct iosched *glbl = va_arg(*args, struct iosched *);
 	char *str = va_arg(*args, char *);
 	int in = va_arg(*args, int);
 	int out = va_arg(*args, int);
@@ -293,28 +301,73 @@ static void test2(va_list *args)
 
 	printf("%s started\n", str);
 	for (;;) {
-		cothread_wait(IOREAD, in);
+		cothread_wait(glbl, IOREAD, in);
 		if ((n = read(in, buf, sizeof(buf))) <= 0)
 			break;
-		cothread_wait(IOWRITE, out);
+		cothread_wait(glbl, IOWRITE, out);
 		write(out, buf, n);
 	}
 	printf("%s: dying\n", str);
-	cothread_wait(0);
+	cothread_wait(glbl, 0);
+}
+
+static void *run_test(void *data)
+{
+	struct iosched glbl[1];
+
+	cothread_init(glbl);
+
+	cothread_new(test1, glbl, "test1a", 10);
+	cothread_new(test1, glbl, "test1b", 12);
+	cothread_new(test1, glbl, "test1c", 14);
+	cothread_new(test2, glbl, "test2", 0, 2);
+
+	for (;;) {
+		printf("main: waiting ...\n");
+		cothread_wait(glbl, IOTIMEOUT, 3000);
+	}
+
+	return NULL;
+}
+
+static void *thread_proc(void *data)
+{
+	void *result;
+
+	co_thread_init();
+	result = run_test(data);
+	co_thread_cleanup();
+
+	return result;
 }
 
 int main(int argc, char **argv)
 {
-	cothread_init();
+	int i, nthreads;
+	pthread_t *thids;
 
-	cothread_new(test1, "test1a", 10);
-	cothread_new(test1, "test1b", 12);
-	cothread_new(test1, "test1c", 14);
-	cothread_new(test2, "test2", 0, 2);
-
-	for (;;) {
-		printf("main: waiting...\n");
-		cothread_wait(IOTIMEOUT, 3000);
+	nthreads = 1;
+	for (i = 1; i < argc; i++) {
+		if (strcmp(argv[i], "-n") == 0) {
+			if (++i < argc)
+				nthreads = atoi(argv[i]);
+		}
 	}
+	if (nthreads == 1)
+		run_test(NULL);
+	else {
+		thids = (pthread_t *) malloc(nthreads * sizeof(pthread_t));
+		for (i = 0; i < nthreads; i++) {
+			if (pthread_create(&thids[i], NULL, thread_proc,
+					   NULL)) {
+				perror("creating worker threads");
+				return 1;
+			}
+		}
+		for (i = 0; i < nthreads; i++)
+			pthread_join(thids[i], NULL);
+	}
+
+	return 0;
 }
 
