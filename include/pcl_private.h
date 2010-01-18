@@ -20,28 +20,53 @@
  *
  */
 
-#if !defined(PCL_H)
-#define PCL_H
+#if !defined(PCL_PRIVATE_H)
+#define PCL_PRIVATE_H
 
-#ifdef __cplusplus
-#define PCLXC extern "C"
+#include <stdio.h>
+#include <stdlib.h>
+#include "pcl_config.h"
+#include "pcl.h"
+
+#if defined(CO_USE_UCONEXT)
+#include <ucontext.h>
+
+typedef ucontext_t co_core_ctx_t;
 #else
-#define PCLXC
+#include <setjmp.h>
+
+typedef jmp_buf co_core_ctx_t;
 #endif
 
-typedef void *coroutine_t;
+/*
+ * The following value must be power of two (N^2).
+ */
+#define CO_STK_ALIGN 256
+#define CO_STK_COROSIZE ((sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1))
+#define CO_MIN_SIZE (4 * 1024)
 
-PCLXC int co_thread_init(void);
-PCLXC void co_thread_cleanup(void);
+typedef struct s_co_ctx {
+	co_core_ctx_t cc;
+} co_ctx_t;
 
-PCLXC coroutine_t co_create(void (*func)(void *), void *data, void *stack,
-			    int size);
-PCLXC void co_delete(coroutine_t coro);
-PCLXC void co_call(coroutine_t coro);
-PCLXC void co_resume(void);
-PCLXC void co_exit_to(coroutine_t coro);
-PCLXC void co_exit(void);
-PCLXC coroutine_t co_current(void);
+typedef struct s_coroutine {
+	co_ctx_t ctx;
+	int alloc;
+	struct s_coroutine *caller;
+	struct s_coroutine *restarget;
+	void (*func)(void *);
+	void *data;
+} coroutine;
+
+typedef struct s_cothread_ctx {
+	coroutine co_main;
+	coroutine *co_curr;
+	coroutine *co_dhelper;
+	coroutine *dchelper;
+	char stk[CO_MIN_SIZE];
+} cothread_ctx;
+
+cothread_ctx *co_get_thread_ctx(void);
 
 #endif
 

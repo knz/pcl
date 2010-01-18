@@ -10,6 +10,9 @@ NAME
 SYNOPSIS
        #include <pcl.h>
 
+       int co_thread_init(void);
+
+       void co_thread_cleanup(void);
        coroutine_t co_create(void *func, void *data, void *stack, int stacksize);
        void co_delete(coroutine_t co);
        void co_call(coroutine_t co);
@@ -17,6 +20,8 @@ SYNOPSIS
        void co_exit_to(coroutine_t co);
        void co_exit(void);
        coroutine_t co_current(void);
+
+       Link with -lpthread if you are using a multi-thread version of PCL.
 
 DESCRIPTION
        The Portable Coroutine Library (PCL) implements the low level function-
@@ -33,6 +38,26 @@ DESCRIPTION
 
    Functions
        The following functions are defined:
+
+       int co_thread_init(void);
+
+              If the PCL library is built in multi-thread mode, and if multi
+              threads are actually used, this function should be called before
+              calling any PCL function.  If the PCL library is built in multi-
+              thread mode, but it is used only from one thread (the main one,
+              likely), then it is possible to avoid to call co_thread_init().
+              Returns 0 in case of success, or an negative error code in case
+              of error.
+
+
+       void co_thread_cleanup(void);
+              If the PCL library is built in multi-thread mode, and if multi
+              threads are actually used, this function should be called before
+              the thread exits, or whenever the thread decides it won't call
+              the PCL functions anymore.  A failure in calling
+              co_thread_cleanup() will result in resource leakage by the call-
+              ing application.
+
 
        coroutine_t co_create(void *func, void *data, void *stack, int stack-
        size);
@@ -101,6 +126,16 @@ DESCRIPTION
 
    Notes
        Some interactions with other parts of the system are covered here.
+
+       Threads
+              If the PCL library has been built in multi-thread mode, then it
+              is possible to use it in multi-thread software.  A thread should
+              call co_thread_init() before using the PCL APIs, and call
+              co_thread_cleanup() before exiting, or when it has done using
+              the PCL APIs.
+              WARNING: For no reason should two different threads run the same
+              coroutine at the same time.
+
 
        Signals
               First, a signal handler is not defined to run in any specific
@@ -171,4 +206,4 @@ BUGS
 
 
 
-GNU                                   1.8                               PCL(3)
+GNU                                   1.9                               PCL(3)

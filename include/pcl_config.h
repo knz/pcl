@@ -37,23 +37,37 @@
  * implementation.
  */
 #define CO_USE_UCONEXT
+/*
+ * Use threads.
+ */
+#define CO_MULTI_THREAD
 
 #elif defined(HAVE_SIGACTION)
 
 /*
- * Use this to have the generic signal implementation ( not working on
- * Windows ). Suggested on generic Unix implementations or on Linux with
+ * Use this to have the generic signal implementation (not working on
+ * Windows). Suggested on generic Unix implementations or on Linux with
  * CPU different from x86 family.
  */
 #define CO_USE_SIGCONTEXT
 
 /*
  * Use this in conjuction with CO_USE_SIGCONTEXT to use the sigaltstack
- * environment ( suggested when CO_USE_SIGCONTEXT is defined ).
+ * environment (suggested when CO_USE_SIGCONTEXT is defined).
  */
 #if defined(HAVE_SIGALTSTACK)
 #define CO_HAS_SIGALTSTACK
 #endif
+
+#else
+/*
+ * This will be using setjmp/longjmp
+ */
+
+/*
+ * Use threads.
+ */
+#define CO_MULTI_THREAD
 
 #endif
 

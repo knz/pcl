@@ -24,50 +24,20 @@
 #include <stdlib.h>
 #include "pcl_config.h"
 #include "pcl.h"
-
-
-#if defined(CO_USE_UCONEXT)
-#include <ucontext.h>
-
-typedef ucontext_t co_core_ctx_t;
-#else
-#include <setjmp.h>
-
-typedef jmp_buf co_core_ctx_t;
-#endif
+#include "pcl_private.h"
 
 #if defined(CO_USE_SIGCONTEXT)
 #include <signal.h>
 #endif
 
+#if defined(CO_USE_SIGCONTEXT)
 
 /*
- * The following value must be power of two (N^2).
+ * Multi thread and CO_USE_SIGCONTEXT are a NO GO!
  */
-#define CO_STK_ALIGN 256
-#define CO_STK_COROSIZE ((sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1))
-#define CO_MIN_SIZE (4 * 1024)
-
-
-typedef struct s_co_ctx {
-	co_core_ctx_t cc;
-} co_ctx_t;
-
-typedef struct s_coroutine {
-	co_ctx_t ctx;
-	int alloc;
-	struct s_coroutine *caller;
-	struct s_coroutine *restarget;
-	void (*func)(void *);
-	void *data;
-} coroutine;
-
-
-static coroutine co_main;
-static coroutine *co_curr = &co_main;
-static coroutine *co_dhelper;
-
-#if defined(CO_USE_SIGCONTEXT)
+#if defined(CO_MULTI_THREAD)
+#error Sorry, it is not possible to use MT libpcl with CO_USE_SIGCONTEXT
+#endif
 
 static volatile int ctx_called;
 static co_ctx_t *ctx_creating;
@@ -114,9 +84,11 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 
 static void co_switch_context(co_ctx_t *octx, co_ctx_t *nctx)
 {
+	cothread_ctx *tctx = co_get_thread_ctx();
+
 	if (swapcontext(&octx->cc, &nctx->cc) < 0) {
 		fprintf(stderr, "[PCL] Context switch failed: curr=%p\n",
-			co_curr);
+			tctx->co_curr);
 		exit(1);
 	}
 }
@@ -142,6 +114,7 @@ static void co_switch_context(co_ctx_t *octx, co_ctx_t *nctx)
  */
 static void co_ctx_bootstrap(void)
 {
+	cothread_ctx *tctx = co_get_thread_ctx();
 	co_ctx_t * volatile ctx_starting;
 	void (* volatile ctx_starting_func)(void);
 
@@ -172,7 +145,7 @@ static void co_ctx_bootstrap(void)
 	ctx_starting_func();
 
 	fprintf(stderr, "[PCL] Hmm, you really shouldn't reach this point: curr=%p\n",
-		co_curr);
+		tctx->co_curr);
 	exit(1);
 }
 
@@ -380,7 +353,8 @@ static void co_switch_context(co_ctx_t *octx, co_ctx_t *nctx)
 
 static void co_runner(void)
 {
-	coroutine *co = co_curr;
+	cothread_ctx *tctx = co_get_thread_ctx();
+	coroutine *co = tctx->co_curr;
 
 	co->restarget = co->caller;
 	co->func(co->data);
@@ -417,11 +391,12 @@ coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size)
 
 void co_delete(coroutine_t coro)
 {
+	cothread_ctx *tctx = co_get_thread_ctx();
 	coroutine *co = (coroutine *) coro;
 
-	if (co == co_curr) {
+	if (co == tctx->co_curr) {
 		fprintf(stderr, "[PCL] Cannot delete itself: curr=%p\n",
-			co_curr);
+			tctx->co_curr);
 		exit(1);
 	}
 	if (co->alloc)
@@ -430,33 +405,38 @@ void co_delete(coroutine_t coro)
 
 void co_call(coroutine_t coro)
 {
-	coroutine *co = (coroutine *) coro, *oldco = co_curr;
+	cothread_ctx *tctx = co_get_thread_ctx();
+	coroutine *co = (coroutine *) coro, *oldco = tctx->co_curr;
 
-	co->caller = co_curr;
-	co_curr = co;
+	co->caller = tctx->co_curr;
+	tctx->co_curr = co;
 
 	co_switch_context(&oldco->ctx, &co->ctx);
 }
 
 void co_resume(void)
 {
-	co_call(co_curr->restarget);
-	co_curr->restarget = co_curr->caller;
+	cothread_ctx *tctx = co_get_thread_ctx();
+
+	co_call(tctx->co_curr->restarget);
+	tctx->co_curr->restarget = tctx->co_curr->caller;
 }
 
 static void co_del_helper(void *data)
 {
+	cothread_ctx *tctx;
 	coroutine *cdh;
 
 	for (;;) {
-		cdh = co_dhelper;
-		co_dhelper = NULL;
-		co_delete(co_curr->caller);
+		tctx = co_get_thread_ctx();
+		cdh = tctx->co_dhelper;
+		tctx->co_dhelper = NULL;
+		co_delete(tctx->co_curr->caller);
 		co_call((coroutine_t) cdh);
-		if (co_dhelper == NULL) {
+		if (tctx->co_dhelper == NULL) {
 			fprintf(stderr,
 				"[PCL] Resume to delete helper coroutine: curr=%p caller=%p\n",
-				co_curr, co_curr->caller);
+				tctx->co_curr, tctx->co_curr->caller);
 			exit(1);
 		}
 	}
@@ -464,32 +444,36 @@ static void co_del_helper(void *data)
 
 void co_exit_to(coroutine_t coro)
 {
+	cothread_ctx *tctx = co_get_thread_ctx();
 	coroutine *co = (coroutine *) coro;
-	static coroutine *dchelper = NULL;
-	static char stk[CO_MIN_SIZE];
 
-	if (dchelper == NULL &&
-	    (dchelper = co_create(co_del_helper, NULL, stk, sizeof(stk))) == NULL) {
+	if (tctx->dchelper == NULL &&
+	    (tctx->dchelper = co_create(co_del_helper, NULL,
+					tctx->stk, sizeof(tctx->stk))) == NULL) {
 		fprintf(stderr, "[PCL] Unable to create delete helper coroutine: curr=%p\n",
-			co_curr);
+			tctx->co_curr);
 		exit(1);
 	}
-	co_dhelper = co;
+	tctx->co_dhelper = co;
 
-	co_call((coroutine_t) dchelper);
+	co_call((coroutine_t) tctx->dchelper);
 
 	fprintf(stderr, "[PCL] Stale coroutine called: curr=%p  exitto=%p  caller=%p\n",
-		co_curr, co, co_curr->caller);
+		tctx->co_curr, co, tctx->co_curr->caller);
 	exit(1);
 }
 
 void co_exit(void)
 {
-	co_exit_to((coroutine_t) co_curr->restarget);
+	cothread_ctx *tctx = co_get_thread_ctx();
+
+	co_exit_to((coroutine_t) tctx->co_curr->restarget);
 }
 
 coroutine_t co_current(void)
 {
-	return (coroutine_t) co_curr;
+	cothread_ctx *tctx = co_get_thread_ctx();
+
+	return (coroutine_t) tctx->co_curr;
 }
 

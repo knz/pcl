@@ -6,7 +6,8 @@ CFG=debug
 PCLLIB=pcl.lib
 PCL_SRCDIR=.\pcl
 INCL_DIRS=/I"$(PCL_SRCDIR)" /I".\include" /I"."
-CFLAGS=/D "HAVE_WINCONFIG_H" /D "_CRT_SECURE_NO_DEPRECATE" /D "_CRT_NONSTDC_NO_DEPRECATE" $(INCL_DIRS)
+CFLAGS=/D _WIN32 /D CO_MULTI_THREAD /D HAVE_WINCONFIG_H /D _CRT_SECURE_NO_DEPRECATE \
+	/D _CRT_NONSTDC_NO_DEPRECATE $(INCL_DIRS)
 
 
 !IF "$(CFG)" == "release"
@@ -29,7 +30,8 @@ LINK32=link.exe
 LINK32_FLAGS="$(OUTDIR)\$(PCLLIB)" kernel32.lib user32.lib /nologo /subsystem:console /incremental:no
 PCLLIB_OBJS= \
 	"$(OUTDIR)\pcl.obj" \
-	"$(OUTDIR)\pcl_version.obj"
+	"$(OUTDIR)\pcl_version.obj" \
+	"$(OUTDIR)\pcl_private.obj" \
 
 
 ALL : "$(OUTDIR)\$(PCLLIB)"
@@ -46,7 +48,5 @@ CLEAN :
 	$(CPP) $(CPP_FLAGS) $<
 
 "$(OUTDIR)\$(PCLLIB)" : "$(OUTDIR)" $(PCLLIB_OBJS)
-	$(LIB32) @<<
-	$(LIB32_FLAGS) /out:"$(OUTDIR)\$(PCLLIB)" $(PCLLIB_OBJS)
-<<
+	$(LIB32) $(LIB32_FLAGS) /out:"$(OUTDIR)\$(PCLLIB)" $(PCLLIB_OBJS)
 

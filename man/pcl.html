@@ -2,7 +2,7 @@
 <HTML><HEAD><TITLE>Man page of PCL</TITLE>
 </HEAD><BODY text="#0000FF" bgcolor="#FFFFFF" style="font-family: monospace;">
 <H1>PCL</H1>
-Section: Portable Coroutine Library (3)<BR>Updated: 1.8<BR><A HREF="#index">Index</A>
+Section: Portable Coroutine Library (3)<BR>Updated: 1.9<BR><A HREF="#index">Index</A>
 <A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
 
 <A NAME="lbAB">&nbsp;</A>
@@ -16,6 +16,9 @@ co_create, co_call, co_resume, co_delete, co_exit_to, co_exit, co_current - C co
 <PRE>
 <B>#include &lt;<A HREF="file:///usr/include/pcl.h">pcl.h</A>&gt;</B>
 
+<B>int co_thread_init(void);</B>
+
+<B>void co_thread_cleanup(void);</B>
 <B>coroutine_t co_create(void *</B><I>func</I><B>, void *</B><I>data</I><B>, void *</B><I>stack</I><B>, int </B><I>stacksize</I><B>);</B>
 <B>void co_delete(coroutine_t </B><I>co</I><B>);</B>
 <B>void co_call(coroutine_t </B><I>co</I><B>);</B>
@@ -23,7 +26,17 @@ co_create, co_call, co_resume, co_delete, co_exit_to, co_exit, co_current - C co
 <B>void co_exit_to(coroutine_t </B><I>co</I><B>);</B>
 <B>void co_exit(void);</B>
 <B>coroutine_t co_current(void);</B>
-</PRE><A NAME="lbAD">&nbsp;</A>
+</PRE>
+
+<P>
+Link with
+<I>-lpthread</I>
+
+if you are using a multi-thread version of
+<B>PCL</B>.
+
+
+<A NAME="lbAD">&nbsp;</A>
 <H2>DESCRIPTION</H2>
 
 The
@@ -49,6 +62,44 @@ Higher level functionality (scheduler, etc.) is not covered.
 
 The following functions are defined:
 <DL COMPACT>
+<DT><B>int co_thread_init(void);</B>
+
+<DD>
+<P>
+If the
+<B>PCL</B>
+
+library is built in multi-thread mode, and if multi threads are actually
+used, this function should be called before calling any
+<B>PCL</B>
+
+function.
+If the
+<B>PCL</B>
+
+library is built in multi-thread mode, but it is used only from one
+thread (the main one, likely), then it is possible to avoid to call
+<B>co_thread_init</B>().
+
+Returns 0 in case of success, or an negative error code in case of error.
+<P>
+<DT><B>void co_thread_cleanup(void);</B>
+
+<DD>
+If the
+<B>PCL</B>
+
+library is built in multi-thread mode, and if multi threads are actually
+used, this function should be called before the thread exits, or whenever
+the thread decides it won't call the
+<B>PCL</B>
+
+functions anymore.
+A failure in calling
+<B>co_thread_cleanup</B>()
+
+will result in resource leakage by the calling application.
+<P>
 <DT><B>coroutine_t co_create(void *</B><I>func</I><B>, void *</B><I>data</I><B>, void *</B><I>stack</I><B>, int </B><I>stacksize</I><B>);</B>
 
 <DD>
@@ -195,6 +246,34 @@ This function returns the currently running coroutine.
 
 Some interactions with other parts of the system are covered here.
 <DL COMPACT>
+<DT><B>Threads</B>
+
+<DD>
+If the
+<B>PCL</B>
+
+library has been built in multi-thread mode, then it is possible to use
+it in multi-thread software.
+A thread should call
+<B>co_thread_init</B>()
+
+before using the
+<B>PCL</B>
+
+APIs, and call
+<B>co_thread_cleanup</B>()
+
+before exiting, or when it has done using the
+<B>PCL</B>
+
+APIs.
+<BR>
+
+<B>WARNING:</B>
+
+For no reason should two different threads run the same coroutine at the
+same time.
+<P>
 <DT><B>Signals</B>
 
 <DD>
@@ -323,6 +402,6 @@ Bug reports and comments to Davide Libenzi &lt;
 This document was created by
 <A HREF="/cgi-bin/man/man2html">man2html</A>,
 using the manual pages.<BR>
-Time: 20:43:35 GMT, January 14, 2010
+Time: 02:54:41 GMT, January 18, 2010
 </BODY>
 </HTML>
