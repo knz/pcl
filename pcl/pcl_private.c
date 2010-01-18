@@ -106,10 +106,7 @@ static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 
 static void co_once_init(void)
 {
-	if (pthread_key_create(&key, free)) {
-		perror("creating TLS key");
-		exit(1);
-	}
+	pthread_key_create(&key, free);
 }
 
 int co_thread_init(void)
