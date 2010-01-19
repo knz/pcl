@@ -3,8 +3,9 @@ PCL(3)                    Portable Coroutine Library                    PCL(3)
 
 
 NAME
-       co_create, co_call, co_resume, co_delete, co_exit_to, co_exit, co_cur-
-       rent - C coroutine management
+       co_thread_init, co_thread_cleanup, co_create, co_call, co_resume,
+       co_delete, co_exit_to, co_exit, co_current, co_get_data, co_set_data -
+       C coroutine management
 
 
 SYNOPSIS
@@ -21,6 +22,7 @@ SYNOPSIS
        void co_exit(void);
        coroutine_t co_current(void);
        void *co_get_data(coroutine_t co);
+       void *co_set_data(coroutine_t co, void *data);
 
        Link with -lpthread if you are using a multi-thread version of PCL.
 
@@ -130,6 +132,12 @@ DESCRIPTION
               This function returns the data associated with the co
                coroutine. The data associated with a coroutine is the data
               parameter passed to co_create().
+
+
+       void *co_set_data(coroutine_t co, void *data);
+
+              Sets the data associated with the co coroutine, and returns the
+              previously associated data.
 
 
    Notes

@@ -1,11 +1,11 @@
 %!PS-Adobe-3.0
 %%Creator: groff version 1.20.1
-%%CreationDate: Mon Jan 18 19:34:15 2010
+%%CreationDate: Tue Jan 19 10:18:49 2010
 %%DocumentNeededResources: font Times-Roman
 %%+ font Times-Bold
 %%+ font Times-Italic
 %%DocumentSuppliedResources: procset grops 1.20 1
-%%Pages: 3
+%%Pages: 4
 %%PageOrder: Ascend
 %%DocumentMedia: Default 612 792 0 () ()
 %%Orientation: Portrait
@@ -237,227 +237,241 @@ BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF 147.34(PCL\(3\) Portable)72 48 R
 (Coroutine Library)2.5 E(PCL\(3\))149.84 E/F1 10.95/Times-Bold@0 SF
--.219(NA)72 84 S(ME).219 E F0
-(co_create, co_call, co_resume, co_delete, co_e)108 96 Q(xit_to, co_e)
--.15 E(xit, co_current \255 C coroutine management)-.15 E F1(SYNOPSIS)72
-124.8 Q/F2 10/Times-Bold@0 SF(#include <pcl.h>)108 136.8 Q(int co_thr)
-108 160.8 Q(ead_init\(v)-.18 E(oid\);)-.1 E -.1(vo)108 184.8 S
-(id co_thr).1 E(ead_cleanup\(v)-.18 E(oid\);)-.1 E(cor)108 196.8 Q
+-.219(NA)72 84 S(ME).219 E F0(co_thread_init, co_thread_cleanup, co_cre\
+ate, co_call, co_resume, co_delete, co_e)108 96 Q(xit_to, co_e)-.15 E
+(xit, co_cur)-.15 E(-)-.2 E
+(rent, co_get_data, co_set_data \255 C coroutine management)108 108 Q F1
+(SYNOPSIS)72 136.8 Q/F2 10/Times-Bold@0 SF(#include <pcl.h>)108 148.8 Q
+(int co_thr)108 172.8 Q(ead_init\(v)-.18 E(oid\);)-.1 E -.1(vo)108 196.8
+S(id co_thr).1 E(ead_cleanup\(v)-.18 E(oid\);)-.1 E(cor)108 208.8 Q
 (outine_t co_cr)-.18 E(eate\(v)-.18 E(oid *)-.1 E/F3 10/Times-Italic@0
 SF(func)1.97 E F2 2.5(,v).31 G(oid *)-2.6 E F3(data).35 E F2 2.5(,v).26
 G(oid *)-2.6 E F3(stac).34 E(k)-.2 E F2 2.5(,i).67 G(nt)-2.5 E F3(stac)
-2.84 E(ksize)-.2 E F2(\);).18 E -.1(vo)108 208.8 S(id co_delete\(cor).1
-E(outine_t)-.18 E F3(co)2.7 E F2(\);).18 E -.1(vo)108 220.8 S
+2.84 E(ksize)-.2 E F2(\);).18 E -.1(vo)108 220.8 S(id co_delete\(cor).1
+E(outine_t)-.18 E F3(co)2.7 E F2(\);).18 E -.1(vo)108 232.8 S
 (id co_call\(cor).1 E(outine_t)-.18 E F3(co)2.7 E F2(\);).18 E -.1(vo)
-108 232.8 S(id co_r).1 E(esume\(v)-.18 E(oid\);)-.1 E -.1(vo)108 244.8 S
+108 244.8 S(id co_r).1 E(esume\(v)-.18 E(oid\);)-.1 E -.1(vo)108 256.8 S
 (id co_exit_to\(cor).1 E(outine_t)-.18 E F3(co)2.7 E F2(\);).18 E -.1
-(vo)108 256.8 S(id co_exit\(v).1 E(oid\);)-.1 E(cor)108 268.8 Q
-(outine_t co_curr)-.18 E(ent\(v)-.18 E(oid\);)-.1 E -.1(vo)108 280.8 S
-(id *co_get_data\(cor).1 E(outine_t)-.18 E F3(co)2.7 E F2(\);).18 E F0
-(Link with)108 304.8 Q F3(-lpthr)2.5 E(ead)-.37 E F0
-(if you are using a multi-thread v)2.5 E(ersion of)-.15 E F2(PCL)2.5 E
-F0(.)A F1(DESCRIPTION)72 321.6 Q F0(The)108 333.6 Q F2 -.2(Po)2.5 G
-(rtable Cor).2 E(outine Library \(PCL\))-.18 E F0(implements the lo)2.5
-E 2.5(wl)-.25 G -2.15 -.25(ev e)-2.5 H 2.5(lf).25 G
-(unctionality for coroutines. F)-2.5 E(or a de\214-)-.15 E
-(nition of the term)108 345.6 Q F2(cor)2.5 E(outine)-.18 E F0(see)2.5 E
+(vo)108 268.8 S(id co_exit\(v).1 E(oid\);)-.1 E(cor)108 280.8 Q
+(outine_t co_curr)-.18 E(ent\(v)-.18 E(oid\);)-.1 E -.1(vo)108 292.8 S
+(id *co_get_data\(cor).1 E(outine_t)-.18 E F3(co)2.7 E F2(\);).18 E -.1
+(vo)108 304.8 S(id *co_set_data\(cor).1 E(outine_t)-.18 E F3(co)2.7 E F2
+2.5(,v).18 G(oid *)-2.6 E F3(data).35 E F2(\);).26 E F0(Link with)108
+328.8 Q F3(-lpthr)2.5 E(ead)-.37 E F0(if you are using a multi-thread v)
+2.5 E(ersion of)-.15 E F2(PCL)2.5 E F0(.)A F1(DESCRIPTION)72 345.6 Q F0
+(The)108 357.6 Q F2 -.2(Po)2.5 G(rtable Cor).2 E(outine Library \(PCL\))
+-.18 E F0(implements the lo)2.5 E 2.5(wl)-.25 G -2.15 -.25(ev e)-2.5 H
+2.5(lf).25 G(unctionality for coroutines. F)-2.5 E(or a de\214-)-.15 E
+(nition of the term)108 369.6 Q F2(cor)2.5 E(outine)-.18 E F0(see)2.5 E
 F3(The Art of Computer Pr)2.5 E -.1(og)-.45 G -.15(ra).1 G(mming).15 E
 F0(by)2.72 E F3(Donald E. Knuth)3.08 E F0 5(.C).28 G(oroutines are a)-5
-E -.15(ve)108 357.6 S(ry simple cooperati).15 E .3 -.15(ve m)-.25 H
+E -.15(ve)108 381.6 S(ry simple cooperati).15 E .3 -.15(ve m)-.25 H
 (ultitasking en).15 E
 (vironment where the switch from one task to another is done)-.4 E -.15
-(ex)108 369.6 S(plicitly by a function call.).15 E
+(ex)108 393.6 S(plicitly by a function call.).15 E
 (Coroutines are a lot f)5 E
 (aster than processes or threads switch, since there is no)-.1 E(OS k)
-108 381.6 Q(ernel in)-.1 E -.2(vo)-.4 G(lv).2 E
+108 405.6 Q(ernel in)-.1 E -.2(vo)-.4 G(lv).2 E
 (ement for the operation. This document de\214nes an API for the lo)-.15
 E 2.5(wl)-.25 G -2.15 -.25(ev e)-2.5 H 2.5(lh).25 G(andling of corou-)
 -2.5 E(tines i.e. creating and deleting coroutines and switching betwee\
-n them.)108 393.6 Q(Higher le)5 E -.15(ve)-.25 G 2.5(lf).15 G
-(unctionality \(sched-)-2.5 E(uler)108 405.6 Q 2.5(,e)-.4 G
-(tc.\) is not co)-2.5 E -.15(ve)-.15 G(red.).15 E F2(Functions)87 434.4
-Q F0(The follo)108 446.4 Q(wing functions are de\214ned:)-.25 E F2
-(int co_thr)108 463.2 Q(ead_init\(v)-.18 E(oid\);)-.1 E F0(If the)144
-487.2 Q F2(PCL)2.5 E F0(library is b)2.5 E(uilt in multi-thread mode, a\
+n them.)108 417.6 Q(Higher le)5 E -.15(ve)-.25 G 2.5(lf).15 G
+(unctionality \(sched-)-2.5 E(uler)108 429.6 Q 2.5(,e)-.4 G
+(tc.\) is not co)-2.5 E -.15(ve)-.15 G(red.).15 E F2(Functions)87 458.4
+Q F0(The follo)108 470.4 Q(wing functions are de\214ned:)-.25 E F2
+(int co_thr)108 487.2 Q(ead_init\(v)-.18 E(oid\);)-.1 E F0(If the)144
+511.2 Q F2(PCL)2.5 E F0(library is b)2.5 E(uilt in multi-thread mode, a\
 nd if multi threads are actually used, this func-)-.2 E
-(tion should be called before calling an)144 499.2 Q(y)-.15 E F2(PCL)2.5
+(tion should be called before calling an)144 523.2 Q(y)-.15 E F2(PCL)2.5
 E F0 2.5(function. If)2.5 F(the)2.5 E F2(PCL)2.5 E F0(library is b)2.5 E
-(uilt in multi-thread)-.2 E(mode, b)144 511.2 Q
+(uilt in multi-thread)-.2 E(mode, b)144 535.2 Q
 (ut it is used only from one thread \(the main one, lik)-.2 E
 (ely\), then it is possible to a)-.1 E -.2(vo)-.2 G(id to call).2 E F2
-(co_thr)144 523.2 Q(ead_init)-.18 E F0 2.5(\(\). Returns)B 2.5(0i)2.5 G
+(co_thr)144 547.2 Q(ead_init)-.18 E F0 2.5(\(\). Returns)B 2.5(0i)2.5 G
 2.5(nc)-2.5 G(ase of success, or an ne)-2.5 E -.05(ga)-.15 G(ti).05 E .3
 -.15(ve e)-.25 H(rror code in case of error).15 E(.)-.55 E F2 -.1(vo)108
-552 S(id co_thr).1 E(ead_cleanup\(v)-.18 E(oid\);)-.1 E F0(If the)144
-564 Q F2(PCL)2.5 E F0(library is b)2.5 E(uilt in multi-thread mode, and\
+576 S(id co_thr).1 E(ead_cleanup\(v)-.18 E(oid\);)-.1 E F0(If the)144
+588 Q F2(PCL)2.5 E F0(library is b)2.5 E(uilt in multi-thread mode, and\
  if multi threads are actually used, this func-)-.2 E
-(tion should be called before the thread e)144 576 Q(xits, or whene)-.15
+(tion should be called before the thread e)144 600 Q(xits, or whene)-.15
 E -.15(ve)-.25 G 2.5(rt).15 G(he thread decides it w)-2.5 E(on')-.1 E
-2.5(tc)-.18 G(all the)-2.5 E F2(PCL)2.5 E F0(functions an)144 588 Q 2.5
+2.5(tc)-.18 G(all the)-2.5 E F2(PCL)2.5 E F0(functions an)144 612 Q 2.5
 (ymore. A)-.15 F -.1(fa)2.5 G(ilure in calling).1 E F2(co_thr)2.5 E
 (ead_cleanup)-.18 E F0(\(\) will result in resource leakage by)A
-(the calling application.)144 600 Q F2(cor)108 628.8 Q(outine_t co_cr)
+(the calling application.)144 624 Q F2(cor)108 652.8 Q(outine_t co_cr)
 -.18 E(eate\(v)-.18 E(oid *)-.1 E F3(func)1.97 E F2 2.5(,v).31 G(oid *)
 -2.6 E F3(data).35 E F2 2.5(,v).26 G(oid *)-2.6 E F3(stac).34 E(k)-.2 E
 F2 2.5(,i).67 G(nt)-2.5 E F3(stac)2.84 E(ksize)-.2 E F2(\);).18 E F0
-(This function creates a ne)144 652.8 Q 2.5(wc)-.25 G(oroutine.)-2.5 E
+(This function creates a ne)144 676.8 Q 2.5(wc)-.25 G(oroutine.)-2.5 E
 F3(func)6.97 E F0(is the entry point of the coroutine.)2.81 E
-(It will be called)5 E(with one ar)144 664.8 Q(g, a)-.18 E F2 -.1(vo)2.5
+(It will be called)5 E(with one ar)144 688.8 Q(g, a)-.18 E F2 -.1(vo)2.5
 G(id *).1 E F0 2.5(,w)C(hich holds the data passed through the)-2.5 E F3
 (data)2.85 E F0(parameter)2.76 E 2.5(.I)-.55 G(f)-2.5 E F3(func)4.47 E
-F0(terminates,)2.81 E(the associated coroutine is deleted.)144 676.8 Q
+F0(terminates,)2.81 E(the associated coroutine is deleted.)144 700.8 Q
 F3(stac)5.34 E(k)-.2 E F0
 (is the base of the stack this coroutine will use and)3.17 E F3(stac)
-2.84 E(k-)-.2 E(size)144 688.8 Q F0(its size in bytes.)2.68 E -1.1(Yo)5
+2.84 E(k-)-.2 E(size)144 712.8 Q F0(its size in bytes.)2.68 E -1.1(Yo)5
 G 2.5(um)1.1 G(ay pass a)-2.5 E F2(NULL)2.5 E F0(pointer for)2.5 E F3
 (stac)2.84 E(k)-.2 E F0(in which case the memory will be)3.17 E
-(allocated by)144 700.8 Q F2(co_cr)2.5 E(eate)-.18 E F0 2.5
+(allocated by)144 724.8 Q F2(co_cr)2.5 E(eate)-.18 E F0 2.5
 (itself. Both,)2.5 F F3(stac)2.5 E(k)-.2 E F0(and)3.17 E F3(stac)2.84 E
-(ksize)-.2 E F0(are aligned to system requirements.)2.5 E(A)5 E F3(stac)
-144.34 712.8 Q(ksize)-.2 E F0(of less then 4096 bytes will be rejected.)
-2.68 E -1.1(Yo)5 G 2.5(uh)1.1 G -2.25 -.2(av e)-2.5 H(to mak)2.7 E 2.5
-(es)-.1 G(ure, that the stack is lar)-2.5 E(ge)-.18 E
-(enough for your coroutine and possible signal handlers \(see belo)144
-724.8 Q 2.5(w\). The)-.25 F(stack will not gro)2.5 E(w!)-.25 E 203.59
+(ksize)-.2 E F0(are aligned to system requirements.)2.5 E(A)5 E 203.59
 (GNU 1.9)72 768 R(1)222.75 E 0 Cg EP
 %%Page: 2 2
 %%BeginPageSetup
 BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF 147.34(PCL\(3\) Portable)72 48 R
-(Coroutine Library)2.5 E(PCL\(3\))149.84 E(\(Exception: the main corout\
-ine uses the standard system stack which may still gro)144 84 Q
-(w\) On success, a)-.25 E(handle \()144 96 Q/F1 10/Times-Bold@0 SF(cor)A
-(outine_t)-.18 E F0 2.5(\)f)C(or a ne)-2.5 E 2.5(wc)-.25 G
-(oroutine is returned, otherwise)-2.5 E F1(NULL)2.5 E F0(.)A F1 -.1(vo)
-108 124.8 S(id co_delete\(cor).1 E(outine_t)-.18 E/F2 10/Times-Italic@0
-SF(co)2.7 E F1(\);).18 E F0(This function deletes the gi)144 148.8 Q
--.15(ve)-.25 G 2.5(nc).15 G(oroutine)-2.5 E F2(co)2.5 E F0 5(.I).18 G
-2.5(ft)-5 G(he stack for this coroutine w)-2.5 E(as allocated by)-.1 E
-F1(co_cr)144 160.8 Q(eate)-.18 E F0(it will be freed.)2.5 E
-(After a coroutine handle w)5 E(as passed to)-.1 E F1(co_delete)2.5 E F0
-(it is in)2.5 E -.25(va)-.4 G(lid and may).25 E(not be used an)144 172.8
+(Coroutine Library)2.5 E(PCL\(3\))149.84 E/F1 10/Times-Italic@0 SF(stac)
+144.34 84 Q(ksize)-.2 E F0(of less then 4096 bytes will be rejected.)
+2.68 E -1.1(Yo)5 G 2.5(uh)1.1 G -2.25 -.2(av e)-2.5 H(to mak)2.7 E 2.5
+(es)-.1 G(ure, that the stack is lar)-2.5 E(ge)-.18 E
+(enough for your coroutine and possible signal handlers \(see belo)144
+96 Q 2.5(w\). The)-.25 F(stack will not gro)2.5 E(w!)-.25 E(\(Exception\
+: the main coroutine uses the standard system stack which may still gro)
+144 108 Q(w\) On success, a)-.25 E(handle \()144 120 Q/F2 10
+/Times-Bold@0 SF(cor)A(outine_t)-.18 E F0 2.5(\)f)C(or a ne)-2.5 E 2.5
+(wc)-.25 G(oroutine is returned, otherwise)-2.5 E F2(NULL)2.5 E F0(.)A
+F2 -.1(vo)108 148.8 S(id co_delete\(cor).1 E(outine_t)-.18 E F1(co)2.7 E
+F2(\);).18 E F0(This function deletes the gi)144 172.8 Q -.15(ve)-.25 G
+2.5(nc).15 G(oroutine)-2.5 E F1(co)2.5 E F0 5(.I).18 G 2.5(ft)-5 G
+(he stack for this coroutine w)-2.5 E(as allocated by)-.1 E F2(co_cr)144
+184.8 Q(eate)-.18 E F0(it will be freed.)2.5 E
+(After a coroutine handle w)5 E(as passed to)-.1 E F2(co_delete)2.5 E F0
+(it is in)2.5 E -.25(va)-.4 G(lid and may).25 E(not be used an)144 196.8
 Q 2.5(ym)-.15 G 2.5(ore. It)-2.5 F(is in)2.5 E -.25(va)-.4 G
-(lid for a coroutine to delete itself with this function.).25 E F1 -.1
-(vo)108 201.6 S(id co_call\(cor).1 E(outine_t)-.18 E F2(co)2.7 E F1(\);)
-.18 E F0(This function passes e)144 225.6 Q -.15(xe)-.15 G
-(cution to the gi).15 E -.15(ve)-.25 G 2.5(nc).15 G(oroutine)-2.5 E F2
+(lid for a coroutine to delete itself with this function.).25 E F2 -.1
+(vo)108 225.6 S(id co_call\(cor).1 E(outine_t)-.18 E F1(co)2.7 E F2(\);)
+.18 E F0(This function passes e)144 249.6 Q -.15(xe)-.15 G
+(cution to the gi).15 E -.15(ve)-.25 G 2.5(nc).15 G(oroutine)-2.5 E F1
 (co)2.5 E F0 5(.T).18 G(he \214rst time the coroutine is e)-5 E -.15(xe)
--.15 G(cuted,).15 E(its entry point)144 237.6 Q F2(func)4.47 E F0
-(is called, and the)2.81 E F2(data)2.85 E F0
-(parameter used during the call to)2.76 E F1(co_cr)2.5 E(eate)-.18 E F0
-(is passed to)2.5 E F2(func)144 249.6 Q F0 5(.T).31 G
+-.15 G(cuted,).15 E(its entry point)144 261.6 Q F1(func)4.47 E F0
+(is called, and the)2.81 E F1(data)2.85 E F0
+(parameter used during the call to)2.76 E F2(co_cr)2.5 E(eate)-.18 E F0
+(is passed to)2.5 E F1(func)144 273.6 Q F0 5(.T).31 G
 (he current coroutine is suspended until another one restarts it with a)
--5 E F1(co_call)2.5 E F0(or)2.5 E F1(co_r)2.5 E(esume)-.18 E F0
-(call. Calling oneself returns immediately)144 261.6 Q(.)-.65 E F1 -.1
-(vo)108 290.4 S(id co_r).1 E(esume\(v)-.18 E(oid\);)-.1 E F0
-(This function passes e)144 314.4 Q -.15(xe)-.15 G(cution back to the c\
+-5 E F2(co_call)2.5 E F0(or)2.5 E F2(co_r)2.5 E(esume)-.18 E F0
+(call. Calling oneself returns immediately)144 285.6 Q(.)-.65 E F2 -.1
+(vo)108 314.4 S(id co_r).1 E(esume\(v)-.18 E(oid\);)-.1 E F0
+(This function passes e)144 338.4 Q -.15(xe)-.15 G(cution back to the c\
 oroutine which either initially started this one or).15 E
-(restarted it after a prior)144 326.4 Q F1(co_r)2.5 E(esume)-.18 E F0(.)
-A F1 -.1(vo)108 355.2 S(id co_exit_to\(cor).1 E(outine_t)-.18 E F2(co)
-2.7 E F1(\);).18 E F0(This function does the same a)144 379.2 Q F1
+(restarted it after a prior)144 350.4 Q F2(co_r)2.5 E(esume)-.18 E F0(.)
+A F2 -.1(vo)108 379.2 S(id co_exit_to\(cor).1 E(outine_t)-.18 E F1(co)
+2.7 E F2(\);).18 E F0(This function does the same a)144 403.2 Q F2
 (co_delete\(co_curr)2.5 E(ent\(\)\))-.18 E F0(follo)2.5 E(wed by a)-.25
-E F1(co_call)2.5 E F0 -.1(wo)2.5 G(uld do.).1 E(That is, it)5 E
-(deletes itself and then passes e)144 391.2 Q -.15(xe)-.15 G
-(cution to another coroutine).15 E F2(co)2.5 E F0(.).18 E F1 -.1(vo)108
-420 S(id co_exit\(v).1 E(oid\);)-.1 E F0(This function does the same a)
-144 444 Q F1(co_delete\(co_curr)2.5 E(ent\(\)\))-.18 E F0(follo)2.5 E
-(wed by a)-.25 E F1(co_r)2.5 E(esume)-.18 E F0 -.1(wo)2.5 G(uld do.).1 E
-(That)5 E(is, it deletes itself and then passes e)144 456 Q -.15(xe)-.15
+E F2(co_call)2.5 E F0 -.1(wo)2.5 G(uld do.).1 E(That is, it)5 E
+(deletes itself and then passes e)144 415.2 Q -.15(xe)-.15 G
+(cution to another coroutine).15 E F1(co)2.5 E F0(.).18 E F2 -.1(vo)108
+444 S(id co_exit\(v).1 E(oid\);)-.1 E F0(This function does the same a)
+144 468 Q F2(co_delete\(co_curr)2.5 E(ent\(\)\))-.18 E F0(follo)2.5 E
+(wed by a)-.25 E F2(co_r)2.5 E(esume)-.18 E F0 -.1(wo)2.5 G(uld do.).1 E
+(That)5 E(is, it deletes itself and then passes e)144 480 Q -.15(xe)-.15
 G(cution back to the coroutine which either initially started this).15 E
-(one or restarted it after a prior)144 468 Q F1(co_r)2.5 E(esume)-.18 E
-F0(.)A F1(cor)108 496.8 Q(outine_t co_curr)-.18 E(ent\(v)-.18 E(oid\);)
+(one or restarted it after a prior)144 492 Q F2(co_r)2.5 E(esume)-.18 E
+F0(.)A F2(cor)108 520.8 Q(outine_t co_curr)-.18 E(ent\(v)-.18 E(oid\);)
 -.1 E F0(This function returns the currently running coroutine.)144
-520.8 Q F1 -.1(vo)108 549.6 S(id *co_get_data\(cor).1 E(outine_t)-.18 E
-F2(co)2.7 E F1(\);).18 E F0
-(This function returns the data associated with the)144 573.6 Q F2(co)
+544.8 Q F2 -.1(vo)108 573.6 S(id *co_get_data\(cor).1 E(outine_t)-.18 E
+F1(co)2.7 E F2(\);).18 E F0
+(This function returns the data associated with the)144 597.6 Q F1(co)
 2.7 E F0(coroutine. The data associated with a coroutine is the)146.5
-585.6 Q F2(data)2.85 E F0(parameter passed to)2.76 E F1(co_cr)2.5 E
-(eate)-.18 E F0(\(\).)A F1(Notes)87 614.4 Q F0
-(Some interactions with other parts of the system are co)108 626.4 Q
--.15(ve)-.15 G(red here.).15 E F1(Thr)108 643.2 Q(eads)-.18 E F0(If the)
-144 655.2 Q F1(PCL)2.5 E F0(library has been b)2.5 E(uilt in multi-thre\
-ad mode, then it is possible to use it in multi-thread)-.2 E(softw)144
-667.2 Q 2.5(are. A)-.1 F(thread should call)2.5 E F1(co_thr)2.5 E
-(ead_init)-.18 E F0(\(\) before using the)A F1(PCL)2.5 E F0
-(APIs, and call)2.5 E F1(co_thr)144 679.2 Q(ead_cleanup)-.18 E F0
-(\(\) before e)A(xiting, or when it has done using the)-.15 E F1(PCL)2.5
-E F0(APIs.)2.5 E F1 -1.2(WA)144 691.2 S(RNING:)1.2 E F0 -.15(Fo)2.5 G
-2.5(rn).15 G 2.5(or)-2.5 G(eason should tw)-2.5 E 2.5(od)-.1 G(if)-2.5 E
-(ferent threads run the same coroutine at the same time.)-.25 E 203.59
-(GNU 1.9)72 768 R(2)222.75 E 0 Cg EP
+609.6 Q F1(data)2.85 E F0(parameter passed to)2.76 E F2(co_cr)2.5 E
+(eate)-.18 E F0(\(\).)A F2 -.1(vo)108 638.4 S(id *co_set_data\(cor).1 E
+(outine_t)-.18 E F1(co)2.7 E F2 2.5(,v).18 G(oid *)-2.6 E F1(data).35 E
+F2(\);).26 E F0(Sets the)144 662.4 Q F1(data)2.85 E F0
+(associated with the)2.76 E F1(co)2.7 E F0
+(coroutine, and returns the pre)2.68 E(viously associated data.)-.25 E
+F2(Notes)87 691.2 Q F0
+(Some interactions with other parts of the system are co)108 703.2 Q
+-.15(ve)-.15 G(red here.).15 E 203.59(GNU 1.9)72 768 R(2)222.75 E 0 Cg
+EP
 %%Page: 3 3
 %%BeginPageSetup
 BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF 147.34(PCL\(3\) Portable)72 48 R
-(Coroutine Library)2.5 E(PCL\(3\))149.84 E/F1 10/Times-Bold@0 SF
-(Signals)108 84 Q F0
-(First, a signal handler is not de\214ned to run in an)144 84 Q 2.5(ys)
--.15 G(peci\214c coroutine. The only w)-2.5 E(ay to lea)-.1 E .3 -.15
-(ve t)-.2 H(he sig-).15 E(nal handler is by a return statement.)144 96 Q
-(Second, the signal handler may run with the stack of an)144 120 Q 2.5
-(yc)-.15 G(oroutine, e)-2.5 E -.15(ve)-.25 G 2.5(nw).15 G
-(ith the stack of library)-2.5 E(internal coroutines which ha)144 132 Q
-.3 -.15(ve a)-.2 H 2.5(nu).15 G
+(Coroutine Library)2.5 E(PCL\(3\))149.84 E/F1 10/Times-Bold@0 SF(Thr)108
+84 Q(eads)-.18 E F0(If the)144 96 Q F1(PCL)2.5 E F0(library has been b)
+2.5 E(uilt in multi-thread mode, then it is possible to use it in multi\
+-thread)-.2 E(softw)144 108 Q 2.5(are. A)-.1 F(thread should call)2.5 E
+F1(co_thr)2.5 E(ead_init)-.18 E F0(\(\) before using the)A F1(PCL)2.5 E
+F0(APIs, and call)2.5 E F1(co_thr)144 120 Q(ead_cleanup)-.18 E F0
+(\(\) before e)A(xiting, or when it has done using the)-.15 E F1(PCL)2.5
+E F0(APIs.)2.5 E F1 -1.2(WA)144 132 S(RNING:)1.2 E F0 -.15(Fo)2.5 G 2.5
+(rn).15 G 2.5(or)-2.5 G(eason should tw)-2.5 E 2.5(od)-.1 G(if)-2.5 E
+(ferent threads run the same coroutine at the same time.)-.25 E F1
+(Signals)108 160.8 Q F0
+(First, a signal handler is not de\214ned to run in an)144 160.8 Q 2.5
+(ys)-.15 G(peci\214c coroutine. The only w)-2.5 E(ay to lea)-.1 E .3
+-.15(ve t)-.2 H(he sig-).15 E(nal handler is by a return statement.)144
+172.8 Q(Second, the signal handler may run with the stack of an)144
+196.8 Q 2.5(yc)-.15 G(oroutine, e)-2.5 E -.15(ve)-.25 G 2.5(nw).15 G
+(ith the stack of library)-2.5 E(internal coroutines which ha)144 208.8
+Q .3 -.15(ve a)-.2 H 2.5(nu).15 G
 (nde\214ned stack size \(just enough to perform a k)-2.5 E
 (ernel call\).)-.1 E
-(Using and alternate stack for signal processing \(see)144 144 Q F1
-(sigaltstack)2.5 E F0(\(2\)\) is recommended!)A(Conclusion: a)144 168 Q
--.2(vo)-.2 G(id signals lik).2 E 2.5(eap)-.1 G 2.5(lague. The)-2.5 F
+(Using and alternate stack for signal processing \(see)144 220.8 Q F1
+(sigaltstack)2.5 E F0(\(2\)\) is recommended!)A(Conclusion: a)144 244.8
+Q -.2(vo)-.2 G(id signals lik).2 E 2.5(eap)-.1 G 2.5(lague. The)-2.5 F
 (only thing you may do reliable is setting some global)2.5 E -.25(va)144
-180 S(riables and return.).25 E(Simple k)5 E(ernel calls may w)-.1 E
+256.8 S(riables and return.).25 E(Simple k)5 E(ernel calls may w)-.1 E
 (ork too, b)-.1 E(ut no)-.2 E -.1(wa)-.25 G(days it').1 E 2.5(sp)-.55 G
-(retty hairy to tell,)-2.5 E(which function really is a k)144 192 Q
+(retty hairy to tell,)-2.5 E(which function really is a k)144 268.8 Q
 (ernel call.)-.1 E(\(Btw)5 E 2.5(,a)-.65 G
 (ll this applies to normal C programs, too.)-2.5 E(The corou-)5 E
-(tines just add one more problem\))144 204 Q F1(setjmp)108 220.8 Q F0(/)
-A F1(longjmp)A F0(The use of)144 232.8 Q F1(setjmp)2.5 E F0(\(2\)/)A F1
-(longjmp)A F0(\(2\) is limited to jumping inside one coroutine.)A(Ne)5 E
--.15(ve)-.25 G 2.5(rt).15 G(ry to jump)-2.5 E
-(from one coroutine to another with)144 244.8 Q F1(longjmp)2.5 E F0
-(\(2\).)A/F2 10.95/Times-Bold@0 SF(DIA)72 273.6 Q(GNOSTICS)-.602 E F0
-(Some f)108 285.6 Q(atal errors are caught by the library)-.1 E 5(.I)
+(tines just add one more problem\))144 280.8 Q F1(setjmp)108 297.6 Q F0
+(/)A F1(longjmp)A F0(The use of)144 309.6 Q F1(setjmp)2.5 E F0(\(2\)/)A
+F1(longjmp)A F0(\(2\) is limited to jumping inside one coroutine.)A(Ne)5
+E -.15(ve)-.25 G 2.5(rt).15 G(ry to jump)-2.5 E
+(from one coroutine to another with)144 321.6 Q F1(longjmp)2.5 E F0
+(\(2\).)A/F2 10.95/Times-Bold@0 SF(DIA)72 350.4 Q(GNOSTICS)-.602 E F0
+(Some f)108 362.4 Q(atal errors are caught by the library)-.1 E 5(.I)
 -.65 G 2.5(fo)-5 G
 (ne occurs, a short message is written to \214le descriptor 2)-2.5 E
-(\(stderr\) and a se)108 297.6 Q(gmentation violation is generated.)-.15
-E F1([PCL]: Cannot delete itself)108 314.4 Q F0 2.5(Ac)144 326.4 S
+(\(stderr\) and a se)108 374.4 Q(gmentation violation is generated.)-.15
+E F1([PCL]: Cannot delete itself)108 391.2 Q F0 2.5(Ac)144 403.2 S
 (oroutine has called)-2.5 E F1(co_delete)2.5 E F0(with it')2.5 E 2.5(so)
--.55 G(wn handle.)-2.75 E F1([PCL]: Resume to deleted cor)108 343.2 Q
-(outine)-.18 E F0 2.5(Ac)144 355.2 S(oroutine has deleted itself with)
--2.5 E F1(co_exit)2.5 E F0(or)2.5 E F1(co_exit_to)2.5 E F0
+-.55 G(wn handle.)-2.75 E F1([PCL]: Resume to deleted cor)108 420 Q
+(outine)-.18 E F0 2.5(Ac)144 432 S(oroutine has deleted itself with)-2.5
+E F1(co_exit)2.5 E F0(or)2.5 E F1(co_exit_to)2.5 E F0
 (and the coroutine that w)2.5 E(as acti)-.1 E -.25(va)-.25 G(ted by).25
-E(the e)144 367.2 Q(xit tried a)-.15 E F1(co_r)2.5 E(esume)-.18 E F0(.)A
-F1([PCL]: Stale cor)108 384 Q(outine called)-.18 E F0
-(Someone tried to acti)144 396 Q .3 -.15(ve a c)-.25 H
+E(the e)144 444 Q(xit tried a)-.15 E F1(co_r)2.5 E(esume)-.18 E F0(.)A
+F1([PCL]: Stale cor)108 460.8 Q(outine called)-.18 E F0
+(Someone tried to acti)144 472.8 Q .3 -.15(ve a c)-.25 H
 (oroutine that has already been deleted.).15 E
 (This error is only detected, if)5 E
-(the stack of the deleted coroutine is still resident in memory)144 408
-Q(.)-.65 E F1([PCL]: Context switch failed)108 424.8 Q F0(Lo)144 436.8 Q
-2.5(wl)-.25 G -2.15 -.25(ev e)-2.5 H 2.5(le).25 G
+(the stack of the deleted coroutine is still resident in memory)144
+484.8 Q(.)-.65 E F1([PCL]: Context switch failed)108 501.6 Q F0(Lo)144
+513.6 Q 2.5(wl)-.25 G -2.15 -.25(ev e)-2.5 H 2.5(le).25 G
 (rror generated by the library in case a conte)-2.5 E
 (xt switch between tw)-.15 E 2.5(oc)-.1 G(oroutines f)-2.5 E(ailes.)-.1
-E F2(SEE ALSO)72 465.6 Q F0(Original)108 477.6 Q F1(cor)2.5 E(outine)
+E F2(SEE ALSO)72 542.4 Q F0(Original)108 554.4 Q F1(cor)2.5 E(outine)
 -.18 E F0(library at)2.5 E F1(http://www)2.5 E(.gor)-.7 E(on.de/~fr)-.18
 E(oese/cor)-.18 E(o/cor)-.18 E(o.html)-.18 E F0 5(.G)2.5 G
-(NU Pth library at)-5 E F1(http://www)108 489.6 Q(.gnu.or)-.7 E
-(g/softwar)-.1 E(e/pth/)-.18 E F0(.)2.5 E F2 -.548(AU)72 518.4 S(THOR)
-.548 E F0(De)108 530.4 Q -.15(ve)-.25 G(loped by Da).15 E
+(NU Pth library at)-5 E F1(http://www)108 566.4 Q(.gnu.or)-.7 E
+(g/softwar)-.1 E(e/pth/)-.18 E F0(.)2.5 E F2 -.548(AU)72 595.2 S(THOR)
+.548 E F0(De)108 607.2 Q -.15(ve)-.25 G(loped by Da).15 E
 (vide Libenzi <)-.2 E F1(da)2.5 E(videl@xmailser)-.25 E -.1(ve)-.1 G -1
 (r.).1 G(or)1 E(g)-.1 E F0(>.)2.5 E(Ideas and man page base source tak)
-108 542.4 Q(en by the coroutine library de)-.1 E -.15(ve)-.25 G
+108 619.2 Q(en by the coroutine library de)-.1 E -.15(ve)-.25 G
 (loped by E. T).15 E(oernig <)-.8 E F1(fr)2.5 E(oese@gmx.de)-.18 E F0
-(>.)108 554.4 Q
-(Also some code and ideas comes from the GNU Pth library a)108 566.4 Q
+(>.)108 631.2 Q
+(Also some code and ideas comes from the GNU Pth library a)108 643.2 Q
 -.25(va)-.2 G(ilable at).25 E F1(http://www)2.5 E(.gnu.or)-.7 E
-(g/softwar)-.1 E(e/pth/)-.18 E F0(.)108 578.4 Q F2 -.11(BU)72 607.2 S
-(GS).11 E F0(There are no kno)108 619.2 Q(wn b)-.25 E 2.5(ugs. But,)-.2
-F(this library is still in de)2.5 E -.15(ve)-.25 G(lopment e).15 E -.15
+(g/softwar)-.1 E(e/pth/)-.18 E F0(.)108 655.2 Q F2 -.11(BU)72 684 S(GS)
+.11 E F0(There are no kno)108 696 Q(wn b)-.25 E 2.5(ugs. But,)-.2 F
+(this library is still in de)2.5 E -.15(ve)-.25 G(lopment e).15 E -.15
 (ve)-.25 G 2.5(ni).15 G 2.5(fi)-2.5 G 2.5(tr)-2.5 G(esults v)-2.5 E
-(ery stable and pretty)-.15 E(much ready for production use.)108 631.2 Q
-(Bug reports and comments to Da)108 655.2 Q(vide Libenzi <)-.2 E F1(da)
-2.5 E(videl@xmailser)-.25 E -.1(ve)-.1 G -1(r.).1 G(or)1 E(g)-.1 E F0
-(>.)2.5 E 203.59(GNU 1.9)72 768 R(3)222.75 E 0 Cg EP
+(ery stable and pretty)-.15 E(much ready for production use.)108 708 Q
+203.59(GNU 1.9)72 768 R(3)222.75 E 0 Cg EP
+%%Page: 4 4
+%%BeginPageSetup
+BP
+%%EndPageSetup
+/F0 10/Times-Roman@0 SF 147.34(PCL\(3\) Portable)72 48 R
+(Coroutine Library)2.5 E(PCL\(3\))149.84 E
+(Bug reports and comments to Da)108 84 Q(vide Libenzi <)-.2 E/F1 10
+/Times-Bold@0 SF(da)2.5 E(videl@xmailser)-.25 E -.1(ve)-.1 G -1(r.).1 G
+(or)1 E(g)-.1 E F0(>.)2.5 E 203.59(GNU 1.9)72 768 R(4)222.75 E 0 Cg EP
 %%Trailer
 end
 %%EOF

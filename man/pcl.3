@@ -23,7 +23,8 @@
 .na
 .TH PCL 3 "1.9" "GNU" "Portable Coroutine Library"
 .SH NAME
-co_create, co_call, co_resume, co_delete, co_exit_to, co_exit, co_current \- C coroutine management
+co_thread_init, co_thread_cleanup, co_create, co_call, co_resume, co_delete,
+co_exit_to, co_exit, co_current, co_get_data, co_set_data \- C coroutine management
 
 .SH SYNOPSIS
 .nf
@@ -48,6 +49,8 @@ co_create, co_call, co_resume, co_delete, co_exit_to, co_exit, co_current \- C c
 .BI "coroutine_t co_current(void);"
 .nl
 .BI "void *co_get_data(coroutine_t " co ");"
+.nl
+.BI "void *co_set_data(coroutine_t " co ", void *" data ");"
 .nl
 .fi
 
@@ -215,6 +218,15 @@ This function returns the data associated with the
 .I data
 parameter passed to
 .BR co_create ().
+
+.TP
+.BI "void *co_set_data(coroutine_t " co ", void *" data ");"
+
+Sets the
+.I data
+associated with the
+.I co
+coroutine, and returns the previously associated data.
 
 .SS Notes
 Some interactions with other parts of the system are covered here.

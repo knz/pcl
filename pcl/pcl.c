@@ -484,3 +484,14 @@ void *co_get_data(coroutine_t coro)
 	return co->data;
 }
 
+void *co_set_data(coroutine_t coro, void *data)
+{
+	coroutine *co = (coroutine *) coro;
+	void *odata;
+
+	odata = co->data;
+	co->data = data;
+
+	return odata;
+}
+

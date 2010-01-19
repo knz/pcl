@@ -43,6 +43,7 @@ PCLXC void co_exit_to(coroutine_t coro);
 PCLXC void co_exit(void);
 PCLXC coroutine_t co_current(void);
 PCLXC void *co_get_data(coroutine_t coro);
+PCLXC void *co_set_data(coroutine_t coro, void *data);
 
 #endif
 

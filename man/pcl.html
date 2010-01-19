@@ -8,7 +8,8 @@ Section: Portable Coroutine Library (3)<BR>Updated: 1.9<BR><A HREF="#index">Inde
 <A NAME="lbAB">&nbsp;</A>
 <H2>NAME</H2>
 
-co_create, co_call, co_resume, co_delete, co_exit_to, co_exit, co_current - C coroutine management
+co_thread_init, co_thread_cleanup, co_create, co_call, co_resume, co_delete,
+co_exit_to, co_exit, co_current, co_get_data, co_set_data - C coroutine management
 <P>
 <A NAME="lbAC">&nbsp;</A>
 <H2>SYNOPSIS</H2>
@@ -27,6 +28,7 @@ co_create, co_call, co_resume, co_delete, co_exit_to, co_exit, co_current - C co
 <B>void co_exit(void);</B>
 <B>coroutine_t co_current(void);</B>
 <B>void *co_get_data(coroutine_t </B><I>co</I><B>);</B>
+<B>void *co_set_data(coroutine_t </B><I>co</I><B>, void *</B><I>data</I><B>);</B>
 </PRE>
 
 <P>
@@ -255,6 +257,18 @@ parameter passed to
 <B>co_create</B>().
 
 <P>
+<DT><B>void *co_set_data(coroutine_t </B><I>co</I><B>, void *</B><I>data</I><B>);</B>
+
+<DD>
+<P>
+Sets the
+<I>data</I>
+
+associated with the
+<I>co</I>
+
+coroutine, and returns the previously associated data.
+<P>
 </DL>
 <A NAME="lbAF">&nbsp;</A>
 <H3>Notes</H3>
@@ -421,6 +435,6 @@ Bug reports and comments to Davide Libenzi &lt;
 This document was created by
 <A HREF="/cgi-bin/man/man2html">man2html</A>,
 using the manual pages.<BR>
-Time: 03:34:15 GMT, January 19, 2010
+Time: 18:18:49 GMT, January 19, 2010
 </BODY>
 </HTML>
