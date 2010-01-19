@@ -477,3 +477,10 @@ coroutine_t co_current(void)
 	return (coroutine_t) tctx->co_curr;
 }
 
+void *co_get_data(coroutine_t coro)
+{
+	coroutine *co = (coroutine *) coro;
+
+	return co->data;
+}
+

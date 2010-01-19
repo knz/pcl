@@ -20,6 +20,7 @@ SYNOPSIS
        void co_exit_to(coroutine_t co);
        void co_exit(void);
        coroutine_t co_current(void);
+       void *co_get_data(coroutine_t co);
 
        Link with -lpthread if you are using a multi-thread version of PCL.
 
@@ -124,6 +125,13 @@ DESCRIPTION
               This function returns the currently running coroutine.
 
 
+       void *co_get_data(coroutine_t co);
+
+              This function returns the data associated with the co
+               coroutine. The data associated with a coroutine is the data
+              parameter passed to co_create().
+
+
    Notes
        Some interactions with other parts of the system are covered here.
 
@@ -190,10 +198,11 @@ SEE ALSO
 
 
 AUTHOR
-       Developed by Davide Libenzi < davidel@xmailserver.org >.  Ideas and man
-       page base source taken by the coroutine library developed by E. Toernig
-       < froese@gmx.de >.  Also some code and ideas comes from the GNU Pth
-       library available at http://www.gnu.org/software/pth/ .
+       Developed by Davide Libenzi < davidel@xmailserver.org >.
+       Ideas and man page base source taken by the coroutine library developed
+       by E. Toernig < froese@gmx.de >.
+       Also some code and ideas comes from the GNU Pth library available at
+       http://www.gnu.org/software/pth/ .
 
 
 BUGS

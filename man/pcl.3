@@ -47,6 +47,8 @@ co_create, co_call, co_resume, co_delete, co_exit_to, co_exit, co_current \- C c
 .nl
 .BI "coroutine_t co_current(void);"
 .nl
+.BI "void *co_get_data(coroutine_t " co ");"
+.nl
 .fi
 
 Link with
@@ -204,6 +206,16 @@ restarted it after a prior
 
 This function returns the currently running coroutine.
 
+.TP
+.BI "void *co_get_data(coroutine_t " co ");"
+
+This function returns the data associated with the
+.I co
+ coroutine. The data associated with a coroutine is the
+.I data
+parameter passed to
+.BR co_create ().
+
 .SS Notes
 Some interactions with other parts of the system are covered here.
 .TP
@@ -289,9 +301,11 @@ GNU Pth library at
 .SH AUTHOR
 Developed by Davide Libenzi <
 .BR davidel@xmailserver.org " >."
+.br
 Ideas and man page base source taken by the coroutine library developed by
 E. Toernig <
 .BR froese@gmx.de " >."
+.br
 Also some code and ideas comes from the GNU Pth library available at
 .BR http://www.gnu.org/software/pth/ " ."
 
