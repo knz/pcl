@@ -29,7 +29,7 @@
 
 static cothread_ctx *co_get_global_ctx(void)
 {
-	static cothread_ctx tctx = { 0, };
+	static cothread_ctx tctx;
 
 	if (tctx.co_curr == NULL)
 		tctx.co_curr = &tctx.co_main;
