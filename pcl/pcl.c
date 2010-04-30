@@ -36,7 +36,7 @@
  * Multi thread and CO_USE_SIGCONTEXT are a NO GO!
  */
 #if defined(CO_MULTI_THREAD)
-#error Sorry, it is not possible to use MT libpcl with CO_USE_SIGCONTEXT
+#error "Sorry, it is not possible to use MT libpcl with CO_USE_SIGCONTEXT"
 #endif
 
 static volatile int ctx_called;
@@ -320,7 +320,20 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 #elif defined(__MINGW32__)
 	ctx->cc[5] = (long) func;
 	ctx->cc[4] = (long) stack;
+#elif defined(__APPLE__)
+/* START Apple */
+#if defined(__x86_64__)
+	*(long *) ((char *) &ctx->cc + 56) = (long) func;
+	*(long *) ((char *) &ctx->cc + 16) = (long) stack;
+#elif defined(__i386__)
+	*(long *) ((char *) &ctx->cc + 48) = (long) func;
+	*(long *) ((char *) &ctx->cc + 36) = (long) stack;
+#else
+#error "PCL: Unsupported setjmp/longjmp OSX CPU. Please report to <davidel@xmailserver.org>"
+#endif
+/* END Apple */
 #elif defined(_WIN32) && defined(_MSC_VER)
+/* START Windows */
 #if defined(_M_IX86)
 	((_JUMP_BUFFER *) &ctx->cc)->Eip = (long) func;
 	((_JUMP_BUFFER *) &ctx->cc)->Esp = (long) stack;
@@ -330,6 +343,7 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 #else
 #error "PCL: Unsupported setjmp/longjmp Windows CPU. Please report to <davidel@xmailserver.org>"
 #endif
+/* END Windows */
 #elif defined(__GLIBC__) && defined(__GLIBC_MINOR__)			\
 	&& __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 0 && (defined(__powerpc64__) || defined(__powerpc__))
 	ctx->cc[0].__jmpbuf[JB_LR] = (int) func;
@@ -368,10 +382,10 @@ coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size)
 
 	if ((size &= ~(sizeof(long) - 1)) < CO_MIN_SIZE)
 		return NULL;
-	if (!stack) {
+	if (stack == NULL) {
 		size = (size + sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1);
 		stack = malloc(size);
-		if (!stack)
+		if (stack == NULL)
 			return NULL;
 		alloc = size;
 	}
