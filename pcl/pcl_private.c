@@ -144,13 +144,14 @@ void co_thread_cleanup(void)
 
 cothread_ctx *co_get_thread_ctx(void)
 {
-	cothread_ctx *tctx = (cothread_ctx *) pthread_getspecific(key);
+	cothread_ctx *tctx = (cothread_ctx *)
+		(valid_key ? pthread_getspecific(key): NULL);
 
 	/*
 	 * Even in MT mode, allows for the main thread to not call
 	 * the co_thread_init()/co_thread_cleanup() functions.
 	 */
-	return valid_key && tctx != NULL ? tctx: co_get_global_ctx();
+	return tctx != NULL ? tctx: co_get_global_ctx();
 }
 
 #endif
