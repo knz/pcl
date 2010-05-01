@@ -101,12 +101,16 @@ cothread_ctx *co_get_thread_ctx(void)
  */
 #include <pthread.h>
 
+static int valid_key;
 static pthread_key_t key;
 static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 
 static void co_once_init(void)
 {
-	pthread_key_create(&key, free);
+	if (pthread_key_create(&key, free))
+		perror("creating TLS key");
+	else
+		valid_key++;
 }
 
 int co_thread_init(void)
@@ -114,6 +118,8 @@ int co_thread_init(void)
 	cothread_ctx *tctx;
 
 	pthread_once(&once_control, co_once_init);
+	if (!valid_key)
+		return -1;
 
 	if ((tctx = (cothread_ctx *)
 	     malloc(sizeof(cothread_ctx))) == NULL) {
@@ -144,7 +150,7 @@ cothread_ctx *co_get_thread_ctx(void)
 	 * Even in MT mode, allows for the main thread to not call
 	 * the co_thread_init()/co_thread_cleanup() functions.
 	 */
-	return tctx != NULL ? tctx: co_get_global_ctx();
+	return valid_key && tctx != NULL ? tctx: co_get_global_ctx();
 }
 
 #endif
