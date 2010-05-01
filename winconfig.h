@@ -24,9 +24,8 @@
 #define WINCONFIG_H
 
 #if !defined(VERSION)
-#define VERSION "1.9"
+#define VERSION "1.10"
 #endif
-
 
 #endif
 
