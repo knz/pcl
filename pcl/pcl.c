@@ -328,6 +328,9 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 #elif defined(__i386__)
 	*(long *) ((char *) &ctx->cc + 48) = (long) func;
 	*(long *) ((char *) &ctx->cc + 36) = (long) stack;
+#elif defined(__arm__)
+	*(long *) ((char *) &ctx->cc + 32) = (long) func;
+	*(long *) ((char *) &ctx->cc + 28) = (long) stack;
 #else
 #error "PCL: Unsupported setjmp/longjmp OSX CPU. Please report to <davidel@xmailserver.org>"
 #endif
