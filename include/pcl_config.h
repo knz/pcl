@@ -34,9 +34,20 @@
  * Need to use setjmp/longjmp on OSX, since the ucontext bits are
  * both broken and deprecated.
  */
-#define CO_MULTI_THREAD
+#ifdef FORCE_APPLE_SIGCONTEXT
+#include <stddef.h>
+struct sigaltstack
+{
+    void            *ss_sp;         /* signal stack base */
+    size_t ss_size;        /* signal stack length */
+    int             ss_flags;       /* SA_DISABLE and/or SA_ONSTACK */
+};
 
-#elif defined(HAVE_GETCONTEXT) && defined(HAVE_MAKECONTEXT) && defined(HAVE_SWAPCONTEXT)
+#define CO_USE_SIGCONTEXT
+#define CO_HAS_SIGALTSTACK
+#endif
+
+#elif defined(HAVE_GETCONTEXT) && defined(HAVE_MAKECONTEXT) && defined(HAVE_SWAPCONTEXT) && !defined(FORCE_SIGCONTEXT) && !defined(FORCE_SETJMP)
 
 /*
  * Use this if the system has a working getcontext/makecontext/swapcontext
@@ -46,9 +57,9 @@
 /*
  * Use threads.
  */
-#define CO_MULTI_THREAD
+// #define CO_MULTI_THREAD
 
-#elif defined(HAVE_SIGACTION)
+#elif defined(HAVE_SIGACTION) && !defined(FORCE_SETJMP)
 
 /*
  * Use this to have the generic signal implementation (not working on
@@ -73,7 +84,7 @@
 /*
  * Use threads.
  */
-#define CO_MULTI_THREAD
+// #define CO_MULTI_THREAD
 
 #endif
 

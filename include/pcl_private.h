@@ -29,6 +29,7 @@
 #include "pcl.h"
 
 #if defined(CO_USE_UCONEXT)
+#include <stdint.h>
 #include <ucontext.h>
 
 typedef ucontext_t co_core_ctx_t;

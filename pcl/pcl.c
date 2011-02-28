@@ -203,7 +203,8 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_ONSTACK;
 	if (sigaction(SIGUSR1, &sa, &osa) != 0)
-		return -1;
+        { perror("sigaction");
+            return -1; }
 
 	/*
 	 * Set the new stack.
@@ -224,7 +225,8 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 	ss.ss_size = stksiz - sizeof(long);
 	ss.ss_flags = 0;
 	if (sigaltstack(&ss, &oss) < 0)
-		return -1;
+        { perror("sigaltstack");
+            return -1; }
 #elif defined(CO_HAS_SIGSTACK)
 	if (co_ctx_stackdir() < 0)
 		ss.ss_sp = (stkbase + stksiz - sizeof(long));
@@ -232,7 +234,8 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 		ss.ss_sp = stkbase;
 	ss.ss_onstack = 0;
 	if (sigstack(&ss, &oss) < 0)
-		return -1;
+        { perror("sigstack");
+            return -1; }
 #else
 #error "PCL: Unknown context stack type"
 #endif
@@ -260,15 +263,18 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 	sigaltstack(NULL, &ss);
 	ss.ss_flags = SS_DISABLE;
 	if (sigaltstack(&ss, NULL) < 0)
-		return -1;
+        { perror("sigaltstack2");
+            return -1; }
 	sigaltstack(NULL, &ss);
 	if (!(ss.ss_flags & SS_DISABLE))
-		return -1;
+        { fprintf(stderr, "sigaltstack2: cannot deactivate stack\n");
+            return -1; }
 	if (!(oss.ss_flags & SS_DISABLE))
 		sigaltstack(&oss, NULL);
 #elif defined(CO_HAS_SIGSTACK)
 	if (sigstack(&oss, NULL))
-		return -1;
+        { perror("sigstack2"); 
+            return -1; }
 #else
 #error "PCL: Unknown context stack type"
 #endif
@@ -301,15 +307,59 @@ static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 static int co_set_context(co_ctx_t *ctx, void *func, char *stkbase, long stksiz)
 {
 	char *stack;
+        long p1,p2;
 
 	stack = stkbase + stksiz - sizeof(long);
 
 	setjmp(ctx->cc);
 
-#if defined(__GLIBC__) && defined(__GLIBC_MINOR__)			\
+#ifdef __linux__
+#if defined(__x86_64__)
+#define JB_PC 7
+#define JB_SP 6
+#define JB_BP 1
+#elif defined(__i386__)
+#define JB_PC 5
+#define JB_SP 1
+#define JB_BP 3
+#endif
+#endif
+
+#if defined(__FreeBSD__) && defined(__i386__)
+        ctx->cc[0]._jb[0] = (int)func;
+        ctx->cc[0]._jb[2] = (int)stack;
+#elif defined(__FreeBSD__) && defined(__sparc64__)
+        ctx->cc[0]._jb[0] = (long)stack;
+        ctx->cc[0]._jb[2] = (long)stack;
+        ctx->cc[0]._jb[1] = (long)func;
+#elif defined(__GLIBC__) && defined(__GLIBC_MINOR__)			\
 	&& __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 0 && defined(JB_PC) && defined(JB_SP)
-	ctx->cc[0].__jmpbuf[JB_PC] = (int) func;
-	ctx->cc[0].__jmpbuf[JB_SP] = (int) stack;
+
+        p1 = (long)func;
+        p2 = (long)stack;
+#if defined(FORTIFY_HACK)
+#if defined(__x86_64__)
+        __asm__ __volatile__("xorq %%fs:0x30, %0\n\trolq $0x11, %0" : "=r"(p1) : "r"(p1));
+        __asm__ __volatile__("xorq %%fs:0x30, %0\n\trolq $0x11, %0" : "=r"(p2) : "r"(p2));        
+#elif defined(__i386__)
+        __asm__ __volatile__("xorl %%gs:0x18, %0\n\troll $9, %0" : "=r"(p1) : "r"(p1));
+        __asm__ __volatile__("xorl %%gs:0x18, %0\n\troll $9, %0" : "=r"(p2) : "r"(p2));
+#endif        
+#endif
+#if defined(FORTIFY_HACK2)
+#if defined(__x86_64__)
+        __asm__ __volatile__("xorq %%fs:0x30, %0" : "=r"(p1) : "r"(p1));
+        __asm__ __volatile__("xorq %%fs:0x30, %0" : "=r"(p2) : "r"(p2));        
+#elif defined(__i386__)
+        __asm__ __volatile__("xorl %%gs:0x18, %0" : "=r"(p1) : "r"(p1));
+        __asm__ __volatile__("xorl %%gs:0x18, %0" : "=r"(p2) : "r"(p2));
+#endif        
+#endif
+	ctx->cc[0].__jmpbuf[JB_PC] = p1;
+	ctx->cc[0].__jmpbuf[JB_SP] = p2;
+	ctx->cc[0].__jmpbuf[JB_BP] = p2;
+        ctx->cc[0].__mask_was_saved = 0;
+
 #elif defined(__GLIBC__) && defined(__GLIBC_MINOR__)			\
 	&& __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 0 && defined(__mc68000__)
 	ctx->cc[0].__jmpbuf[0].__aregs[0] = (long) func;
@@ -389,7 +439,8 @@ coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size)
 		size = (size + sizeof(coroutine) + CO_STK_ALIGN - 1) & ~(CO_STK_ALIGN - 1);
 		stack = malloc(size);
 		if (stack == NULL)
-			return NULL;
+                { perror("malloc");
+                    return NULL; }
 		alloc = size;
 	}
 	co = stack;
@@ -398,6 +449,7 @@ coroutine_t co_create(void (*func)(void *), void *data, void *stack, int size)
 	co->func = func;
 	co->data = data;
 	if (co_set_context(&co->ctx, co_runner, stack, size - CO_STK_COROSIZE) < 0) {
+            fprintf(stderr, "co_create: cannot configure context\n");
 		if (alloc)
 			free(co);
 		return NULL;
